@@ -9,8 +9,8 @@ export const Navbar = () => {
             <Toolbar>
                 <NextLink href="/" passHref>
                     <Link component={'span'} display='flex' alignItems='center'>
-                        <Typography variant="h6">Teslo |</Typography>
-                        <Typography sx={{ ml: 0.5 }}>Shop</Typography>
+                        <Typography variant="h6" component="h6">Teslo |</Typography>
+                        <Typography component="p" sx={{ ml: 0.5 }}>Shop</Typography>
                     </Link>
                 </NextLink>
 
@@ -22,13 +22,13 @@ export const Navbar = () => {
                             <Button>Hombre</Button>
                         </Link>
                     </NextLink>
-                    {/*  */}
+                   
                     <NextLink href='/category/women' passHref>
                         <Link component={'span'}>
                             <Button>Mujeres</Button>
                         </Link>
                     </NextLink>
-                    {/*  */}
+                    
                     <NextLink href='/category/kids' passHref>
                         <Link component={'span'}>
                             <Button>Niños</Button>
@@ -43,14 +43,14 @@ export const Navbar = () => {
                 </IconButton>
 
                 <NextLink href='/cart' passHref>
-                    <Link>
+                    <Link component={'span'}>
                         <IconButton>
                             <Badge badgeContent={2} color="secondary">
                                 <ShoppingCartOutlined />
                             </Badge>
                         </IconButton>
                     </Link>
-                </NextLink>
+                </NextLink> 
 
                 <Button>
                     Menú
