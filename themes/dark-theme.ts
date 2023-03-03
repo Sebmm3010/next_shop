@@ -8,7 +8,10 @@ export const darkTheme = createTheme({
             main: '#e0e0e0'
         },
         secondary: {
-            main: '#3A64D8'
+            main: '#0535f5'
+        },
+        info:{
+            main: '#000300'
         }
     },
     components: {
@@ -53,11 +56,12 @@ export const darkTheme = createTheme({
                 variant: 'contained',
                 size: 'small',
                 disableElevation: true,
+                color: 'info'
             },
             styleOverrides: {
                 root: {
-                    backgroundColor: 'black',
-                    color: 'white',
+                    // backgroundColor: 'black',
+                    // color: 'white',
                     textTransform: 'none',
                     boxShadow: 'none',
                     borderRadius: 10,
