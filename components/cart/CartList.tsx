@@ -18,7 +18,7 @@ const productList = [
   initialData.products[3],
 ];
 
-export const CardList = () => {
+export const CartList = () => {
   return (
     <>
       {productList.map((product) => (
