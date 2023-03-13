@@ -1,0 +1,24 @@
+import { ISize } from "@/interfaces";
+import { FC } from "react";
+import { Box, Button } from "@mui/material";
+
+interface Props {
+  selectedSize: ISize;
+  sizes: ISize[];
+}
+
+export const ProducrSizeSelector: FC<Props> = ({ selectedSize, sizes }) => {
+  return (
+    <Box>
+      {sizes.map((size) => (
+        <Button
+          key={size}
+          size="small"
+          color={selectedSize === size ? "primary" : "info"}
+        >
+          {size}
+        </Button>
+      ))}
+    </Box>
+  );
+};
