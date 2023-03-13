@@ -13,10 +13,12 @@ import { CartList, CartOrderSummary } from "@/components/cart";
 const CartPage = () => {
   return (
     <ShopLayout title={`Carrito(${2})`} pageDesc={"Carrito de la tienda"}>
-      <Typography variant="h1">Carrito</Typography>
+      <Typography variant="h1" component="h1">
+        Carrito
+      </Typography>
       <Grid container>
         <Grid item xs={12} sm={7}>
-          <CartList editable/>
+          <CartList editable />
         </Grid>
         <Grid item xs={12} sm={5}>
           <Card className="summary-card">
