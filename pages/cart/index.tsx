@@ -8,7 +8,7 @@ import {
   Button,
 } from "@mui/material";
 import { ShopLayout } from "@/components/layouts";
-import { CartList } from "@/components/cart";
+import { CartList, CartOrderSummary } from "@/components/cart";
 
 const index = () => {
   return (
@@ -16,7 +16,7 @@ const index = () => {
       <Typography variant="h1">Carrito</Typography>
       <Grid container>
         <Grid item xs={12} sm={7}>
-          <CartList />
+          <CartList editable/>
         </Grid>
         <Grid item xs={12} sm={5}>
           <Card className="summary-card">
@@ -25,7 +25,7 @@ const index = () => {
                 Orden
               </Typography>
               <Divider sx={{ my: 1 }} />
-              {/* Order Summary */}
+              <CartOrderSummary />
 
               <Box sx={{ mt: 3 }}>
                 <Button color="secondary" className="circular-btn" fullWidth>

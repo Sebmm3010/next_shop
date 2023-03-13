@@ -1,3 +1,4 @@
+import { FC } from "react";
 import NextLink from "next/link";
 import {
   CardActionArea,
@@ -18,7 +19,11 @@ const productList = [
   initialData.products[3],
 ];
 
-export const CartList = () => {
+interface Props {
+  editable: boolean;
+}
+
+export const CartList: FC<Props> = ({ editable }) => {
   return (
     <>
       {productList.map((product) => (
@@ -37,15 +42,17 @@ export const CartList = () => {
             </NextLink>
           </Grid>
           <Grid item xs={7}>
-            <Box display="flex">
+            <Box display="flex" flexDirection="column">
               <Typography variant="body1">{product.title}</Typography>
               <Typography variant="body1">
                 Talla: <strong>M</strong>
               </Typography>
-
-              {/* Condicional */}
+              {editable ? (
+                <ItemCounter />
+              ) : (
+                <Typography variant="h5">4 items</Typography>
+              )}
             </Box>
-          <ItemCounter />
           </Grid>
           <Grid
             item
@@ -56,9 +63,11 @@ export const CartList = () => {
           >
             <Typography variant="subtitle1">{`${product.price}`}</Typography>
             {/* Editable */}
-            <Button color="secondary" variant="text">
-              Pagar
-            </Button>
+            {editable && (
+              <Button color="secondary" variant="text">
+                Eliminar
+              </Button>
+            )}
           </Grid>
         </Grid>
       ))}
