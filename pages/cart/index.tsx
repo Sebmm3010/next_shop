@@ -10,7 +10,7 @@ import {
 import { ShopLayout } from "@/components/layouts";
 import { CartList, CartOrderSummary } from "@/components/cart";
 
-const index = () => {
+const CartPage = () => {
   return (
     <ShopLayout title={`Carrito(${2})`} pageDesc={"Carrito de la tienda"}>
       <Typography variant="h1">Carrito</Typography>
@@ -40,4 +40,4 @@ const index = () => {
   );
 };
 
-export default index;
+export default CartPage;
