@@ -20,7 +20,7 @@ const EmptyPage = () => {
           <Typography>El carrito esta vació</Typography>
           <NextLink href="/" passHref>
             <Link component={"span"}>
-              <Typography color="secondary" variant="h4">
+              <Typography color="secondary" variant="h4" component="h4">
                 Regresar
               </Typography>
             </Link>
