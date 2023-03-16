@@ -9,7 +9,7 @@ export const Navbar = () => {
             <Toolbar>
                 <NextLink href="/" passHref>
                     <Link component={'span'} display='flex' alignItems='center'>
-                        <Typography variant="h6" component="h6">Teslo |</Typography>
+                        <Typography variant="h6" component="h6">Next |</Typography>
                         <Typography component="p" sx={{ ml: 0.5 }}>Shop</Typography>
                     </Link>
                 </NextLink>
