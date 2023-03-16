@@ -37,7 +37,7 @@ export const initialData: SeedData = {
     {
       description:
         "Esta sudadera de manga larga es la prenda perfecta para añadir un toque de color a tu armario. Confeccionada en suave algodón de alta calidad, esta sudadera es cómoda y resistente para el uso diario. El color rojo vibrante es llamativo y atractivo, lo que la convierte en una prenda ideal para cualquier ocasión casual permitiendole estar a lo ultimo de la moda.",
-      images: ["1740176-00-A_0_2000.jpg", "1740176-00-A_1.jpg"],
+      images: ["1740176-00-A_1.jpg","1740176-00-A_0_2000.jpg"],
       inStock: 7,
       price: 50000,
       sizes: ["XS", "S", "M", "L", "XL", "XXL"],
@@ -598,7 +598,7 @@ export const initialData: SeedData = {
     {
       description:
         "Esta gorra roja para niños es una prenda divertida y funcional, perfecta para proteger a los más pequeños del sol y el viento. Confeccionada en un resistente tejido de algodón, cuenta con un diseño clásico y atemporal que nunca pasa de moda.",
-      images: ["1473834-00-A_2_2000.jpg", "1473829-00-A_2_2000.jpg"],
+      images: ["1473834-00-A_2_2001.jpg", "1473829-00-A_2_2000.jpg"],
       inStock: 10,
       price: 30000,
       sizes: ["XS", "S"],

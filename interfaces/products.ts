@@ -12,5 +12,19 @@ export interface IProduct{
     gender: 'men' | 'women' | 'kid' | 'unisex'
 }
 
-export type ISize = 'XS' | 'S' | 'M' | 'L' | 'XL' | 'XXL' | 'XXXL';
+export type ISize =
+  | "XS"
+  | "S"
+  | "M"
+  | "L"
+  | "XL"
+  | "XXL"
+  | "XXXL"
+  | "30"
+  | "33"
+  | "35"
+  | "36"
+  | "37"
+  | "40"
+  | "43";
 export type IType = 'shirts' | 'pants' | 'hoodies' | 'hats';
