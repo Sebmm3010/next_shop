@@ -10,6 +10,9 @@ export interface IProduct {
   title: string;
   type: IType;
   gender: "hombre" | "mujer" | "infantil" | "unisex";
+
+  createdAt: string;
+  updatedAt: string;
 }
 
 export type ISize =
