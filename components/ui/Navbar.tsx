@@ -19,7 +19,7 @@ export const Navbar = () => {
                 <Box sx={{ display: { xs: 'none', sm:'block' } }}>
                     <NextLink href='/category/men' passHref>
                         <Link component={'span'}>
-                            <Button>Hombre</Button>
+                            <Button>Hombres</Button>
                         </Link>
                     </NextLink>
                    

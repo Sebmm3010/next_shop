@@ -1,16 +1,15 @@
 import { Typography } from "@mui/material";
 import { ShopLayout } from "../components/layouts";
-import { initialData } from "@/data/products";
 import { ProductList } from "@/components/products";
 import { useProducts } from "@/hooks";
 import { FullScreenLoading } from '../components/ui';
 
 export default function Home() {
-  const { products, isError, isLoading } = useProducts("/products");
+  const { products, isLoading } = useProducts("/products");
   return (
     <ShopLayout
-      title="Teslo Shop | Home"
-      pageDesc="Ecommerce clon de teslo shop"
+      title="Next Shop | Home"
+      pageDesc="Ecommerce clon de Next shop"
     >
       <Typography variant="h1" component="h1">
         Home
