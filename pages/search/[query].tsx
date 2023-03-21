@@ -12,22 +12,39 @@ interface Props{
 const SearchPage:NextPage<Props> = ({products, foundProducts, query}) => {
   return (
     <ShopLayout
-      title="Next Shop | Buscar"
-      pageDesc="Pagina de busquedas de Nextshop"
+      title={`Next Shop | Buscar: ${query}`}
+      pageDesc={`Pagina de busquedas de Nextshop para ${query}`}
     >
       <Typography variant="h1" component="h1">
         Buscar productos
       </Typography>
       {foundProducts ? (
-        <Typography variant="h2" component="h2" sx={{ mb: 1 }}>
-          {query}
-        </Typography>
+        <Box display="flex">
+          <Typography variant="h2" component="h2" sx={{ mb: 1 }}>
+            Productos con:
+          </Typography>
+          <Typography
+            variant="h2"
+            component="h2"
+            sx={{ mb: 1, ml: 1 }}
+            color="secondary"
+            fontWeight="bold"
+          >
+            {query}
+          </Typography>
+        </Box>
       ) : (
         <Box display="flex">
           <Typography variant="h2" component="h2" sx={{ mb: 1 }}>
             No se encontraron productos con:
           </Typography>
-          <Typography variant="h2" component="h2" sx={{ mb: 1, ml:1 }} color="error">
+          <Typography
+            variant="h2"
+            component="h2"
+            sx={{ mb: 1, ml: 1 }}
+            color="error"
+            fontWeight="bold"
+          >
             {query}
           </Typography>
         </Box>
