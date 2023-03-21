@@ -2,7 +2,7 @@ import { uiState } from './';
 
 
 type UiActionType = 
-   | { type: '[Ui] - setIsSideMenuOpen' } 
+   | { type: '[Ui] - setIsSideMenuOpen', payload:boolean } 
 
 
 export const uiReducer = ( state: uiState, action: UiActionType ): uiState => {
@@ -11,7 +11,7 @@ export const uiReducer = ( state: uiState, action: UiActionType ): uiState => {
       case '[Ui] - setIsSideMenuOpen':
          return {
             ...state,
-            isSideMenuOpen: !state.isSideMenuOpen
+            isSideMenuOpen: action.payload
           }
 
        default:
