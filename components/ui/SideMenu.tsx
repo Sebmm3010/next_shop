@@ -1,5 +1,5 @@
-import { useContext } from "react";
-import { useRouter } from 'next/router';
+import { useContext, useState } from "react";
+import { useRouter } from "next/router";
 
 import {
   Box,
@@ -31,28 +31,41 @@ import {
 import { UiContext } from "@/context";
 
 export const SideMenu = () => {
-  const { isSideMenuOpen,toogleSideMenu }=useContext(UiContext);
-  const router=useRouter();
-  const navigate=(url:string)=>{
+  const [searchInput, setSearchInput] = useState("");
+
+  const { isSideMenuOpen, toogleSideMenu } = useContext(UiContext);
+  const router = useRouter();
+
+  const navigate = (url: string) => {
     router.push(url);
-    toogleSideMenu();
+    toogleSideMenu(false);
+  };
+
+  const onSearch=()=>{
+    if(searchInput.trim().length===0) return;
+
+    navigate(`/search/${searchInput}`)
   }
+
   return (
     <Drawer
       open={isSideMenuOpen}
       anchor="right"
       sx={{ backdropFilter: "blur(4px)", transition: "all 0.5s ease-out" }}
-      onClose={toogleSideMenu}
+      onClose={() => toogleSideMenu(false)}
     >
       <Box sx={{ width: 250, paddingTop: 5 }}>
         <List>
           <ListItem>
             <Input
+              value={searchInput}
+              onChange={(e) => setSearchInput(e.target.value)}
+              onKeyDown={(e) => e.key === "Enter" && onSearch()}
               type="text"
               placeholder="Buscar..."
               endAdornment={
                 <InputAdornment position="end">
-                  <IconButton aria-label="toggle password visibility">
+                  <IconButton onClick={onSearch}>
                     <SearchOutlined />
                   </IconButton>
                 </InputAdornment>
