@@ -4,7 +4,7 @@ import { ProductList } from "@/components/products";
 import { useProducts } from "@/hooks";
 import { FullScreenLoading } from '../components/ui';
 
-export default function Home() {
+const HomePage=()=> {
   const { products, isLoading } = useProducts("/products");
   return (
     <ShopLayout
@@ -21,3 +21,4 @@ export default function Home() {
     </ShopLayout>
   );
 }
+export default HomePage;
