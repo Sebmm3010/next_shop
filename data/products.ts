@@ -201,7 +201,7 @@ export const initialData: SeedData = {
       sizes: ["XL", "XXL"],
       slug: "camisa_pac_man",
       type: "camisa",
-      tags: ["camisa", "pac-man", "games"],
+      tags: ["camisa", "pac-man", "games", "pacman"],
       title: "Camisa de pac-man",
       gender: "hombre",
     },
