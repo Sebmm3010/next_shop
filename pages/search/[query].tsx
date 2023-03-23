@@ -29,6 +29,7 @@ const SearchPage:NextPage<Props> = ({products, foundProducts, query}) => {
             sx={{ mb: 1, ml: 1 }}
             color="secondary"
             fontWeight="bold"
+            textTransform="capitalize"
           >
             {query}
           </Typography>
