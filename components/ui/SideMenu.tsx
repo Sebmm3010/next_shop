@@ -38,26 +38,27 @@ export const SideMenu = () => {
 
   const navigate = (url: string) => {
     router.push(url);
-    toogleSideMenu(false);
+    toogleSideMenu();
   };
 
-  const onSearch=()=>{
-    if(searchInput.trim().length===0) return;
-
-    navigate(`/search/${searchInput}`)
-  }
+  const onSearch = () => {
+    if (searchInput.trim().length === 0) return;
+    setSearchInput("")
+    navigate(`/search/${searchInput}`);
+  };
 
   return (
     <Drawer
       open={isSideMenuOpen}
       anchor="right"
       sx={{ backdropFilter: "blur(4px)", transition: "all 0.5s ease-out" }}
-      onClose={() => toogleSideMenu(false)}
+      onClose={()=>{ toogleSideMenu(); setSearchInput("")}}
     >
       <Box sx={{ width: 250, paddingTop: 5 }}>
         <List>
           <ListItem>
             <Input
+              autoFocus
               value={searchInput}
               onChange={(e) => setSearchInput(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && onSearch()}

@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useState } from "react";
 import { useRouter } from "next/router";
 import NextLink from "next/link";
 import {
@@ -6,18 +6,31 @@ import {
   Badge,
   Button,
   IconButton,
+  Input,
+  InputAdornment,
   Link,
   Toolbar,
   Typography,
 } from "@mui/material";
 import { Box } from "@mui/system";
-import { SearchOutlined, ShoppingCartOutlined } from "@mui/icons-material";
-import { UiContext } from '@/context';
+import {
+  CloseOutlined,
+  SearchOutlined,
+  ShoppingCartOutlined,
+} from "@mui/icons-material";
+import { UiContext } from "@/context";
 
 export const Navbar = () => {
-  const { pathname } = useRouter();
+  const router = useRouter();
+  const [searchInput, setSearchInput] = useState("");
+  const [isInputVisible, setIsInputVisible] = useState(false);
 
-  const {toogleSideMenu}= useContext(UiContext);
+  const onSearch = () => {
+    if (searchInput.trim().length === 0) return;
+    router.push(`/search/${searchInput}`);
+  };
+
+  const { toogleSideMenu } = useContext(UiContext);
   return (
     <AppBar>
       <Toolbar>
@@ -34,10 +47,17 @@ export const Navbar = () => {
 
         <Box flex={1} />
 
-        <Box sx={{ display: { xs: "none", sm: "block" } }}>
+        <Box
+          className="fadeIn"
+          sx={{
+            display: isInputVisible ? "none" : { xs: "none", sm: "block" },
+          }}
+        >
           <NextLink href="/category/men" passHref>
             <Link component={"span"}>
-              <Button color={pathname === "/category/men" ? "primary" : "info"}>
+              <Button
+                color={router.pathname === "/category/men" ? "primary" : "info"}
+              >
                 Hombres
               </Button>
             </Link>
@@ -47,7 +67,9 @@ export const Navbar = () => {
             <Link component={"span"}>
               <Button
                 color={
-                  pathname.includes("/category/women") ? "primary" : "info"
+                  router.pathname.includes("/category/women")
+                    ? "primary"
+                    : "info"
                 }
               >
                 Mujeres
@@ -58,7 +80,9 @@ export const Navbar = () => {
           <NextLink href="/category/kids" passHref>
             <Link component={"span"}>
               <Button
-                color={pathname.includes("/category/kid") ? "primary" : "info"}
+                color={
+                  router.pathname.includes("/category/kid") ? "primary" : "info"
+                }
               >
                 Niños
               </Button>
@@ -68,7 +92,47 @@ export const Navbar = () => {
 
         <Box flex={1} />
 
-        <IconButton>
+        {isInputVisible ? (
+          <Input
+            className="fadeIn"
+            autoFocus
+            value={searchInput}
+            onChange={(e) => setSearchInput(e.target.value)}
+            onKeyDown={(e) => e.key === "Enter" && onSearch()}
+            type="text"
+            placeholder="Buscar..."
+            sx={{ display: { xs: "none", sm: "flex" } }}
+            endAdornment={
+              <InputAdornment position="end">
+                <IconButton
+                  onClick={() => {
+                    setIsInputVisible(false);
+                    setSearchInput("");
+                  }}
+                >
+                  <CloseOutlined />
+                </IconButton>
+
+                <IconButton onClick={onSearch}>
+                  <SearchOutlined />
+                </IconButton>
+              </InputAdornment>
+            }
+          />
+        ) : (
+          <IconButton
+            onClick={() => setIsInputVisible(true)}
+            sx={{ display: { xs: "none", sm: "flex" } }}
+          >
+            <SearchOutlined />
+          </IconButton>
+        )}
+
+        {/* Pantalla pequeña */}
+        <IconButton
+          sx={{ display: { xs: "flex", sm: "none" } }}
+          onClick={(e) => e.detail !== 0 && toogleSideMenu()}
+        >
           <SearchOutlined />
         </IconButton>
 
@@ -82,7 +146,7 @@ export const Navbar = () => {
           </Link>
         </NextLink>
 
-        <Button onClick={(e) => e.detail !== 0 && toogleSideMenu(true)}>
+        <Button onClick={(e) => e.detail !== 0 && toogleSideMenu()}>
           Menú
         </Button>
       </Toolbar>
