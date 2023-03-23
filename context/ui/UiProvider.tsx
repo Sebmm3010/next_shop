@@ -15,8 +15,8 @@ interface Props {
 export const UiProvider: FC<Props> = ({ children }) => {
   const [state, dispatch] = useReducer(uiReducer, UI_INITIAL_STATE);
 
-  const toogleSideMenu=(value:boolean)=>{
-    dispatch({type:"[Ui] - setIsSideMenuOpen", payload:value});
+  const toogleSideMenu=()=>{
+    dispatch({type:"[Ui] - setIsSideMenuOpen"});
   }
 
   return (
