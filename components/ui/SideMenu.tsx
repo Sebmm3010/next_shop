@@ -52,11 +52,14 @@ export const SideMenu = () => {
       open={isSideMenuOpen}
       anchor="right"
       sx={{ backdropFilter: "blur(4px)", transition: "all 0.5s ease-out" }}
-      onClose={()=>{ toogleSideMenu(); setSearchInput("")}}
+      onClose={() => {
+        toogleSideMenu();
+        setSearchInput("");
+      }}
     >
       <Box sx={{ width: 250, paddingTop: 5 }}>
         <List>
-          <ListItem>
+          <ListItem sx={{ display: { xs: "block", sm: "none" } }}>
             <Input
               autoFocus
               value={searchInput}
