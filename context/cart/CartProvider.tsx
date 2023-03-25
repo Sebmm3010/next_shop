@@ -15,11 +15,39 @@ interface Props {
 }
 export const CartProvider: FC<Props> = ({ children }) => {
   const [state, dispatch] = useReducer(cartReducer, CART_INITIAL_STATE);
+  const addProductCart = (value: ICartProduct) => {
+    const productsInCart = state.cart.some((p) => p._id === value._id);
+    // ? Ingresa el producto si no existe en el carro
+    if (!productsInCart)
+      return dispatch({
+        type: "[Cart] - UpdateProducts in cart",
+        payload: [...state.cart, value],
+      });
 
+    const diferentsSizeProductInCart = state.cart.some(
+      (p) => p._id === value._id && p.size === value.size
+    );
+    // ?Validar si el producto existe pero tiene otra talla
+    if (!diferentsSizeProductInCart)
+      return dispatch({
+        type: "[Cart] - UpdateProducts in cart",
+        payload: [...state.cart, value],
+      });
+
+    const updateProducts = state.cart.map((p) => {
+      if (p._id !== value._id) return p;
+      if (p.size !== value.size) return p;
+
+      p.quantity += value.quantity;
+      return p;
+    });
+    dispatch({type:"[Cart] - UpdateProducts in cart", payload:updateProducts})
+  };
   return (
     <CartContext.Provider
       value={{
         ...state,
+        addProductCart,
       }}
     >
       {children}
