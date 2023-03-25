@@ -1,18 +1,34 @@
+import { useState } from "react";
 import { NextPage } from "next";
 import { Grid, Box, Typography, Button, Chip } from "@mui/material";
 import { ShopLayout } from "@/components/layouts";
 import { ProducrSizeSelector, ProductSlideShow } from "@/components/products";
 import { ItemCounter } from "../../components/ui";
-import { IProduct } from "../../interfaces";
+import { IProduct, ICartProduct } from "../../interfaces";
 
 interface Props {
   product: IProduct;
 }
 
 const ProductPage: NextPage<Props> = ({ product }) => {
-  // const router = useRouter();
-  // const { products:product, isLoading }=useProducts<IProduct>(`/products/${router.query.slug}`);
-  // console.log(product);
+  const [tempProduct, setTempProduct] = useState<ICartProduct>({
+    _id: product._id,
+    description: product.description,
+    image: product.images[0],
+    inStock: product.inStock,
+    price: product.price,
+    size: undefined,
+    slug: product.slug,
+    title: product.title,
+    gender: product.gender,
+    quantity: 1,
+  });
+  const handleSelectedSize=(size:ISize)=>{
+    setTempProduct(currentProduct=>({
+      ...currentProduct,
+      size
+    }));
+  }
 
   return (
     <ShopLayout title={product.title} pageDesc={product.description}>
@@ -35,13 +51,17 @@ const ProductPage: NextPage<Props> = ({ product }) => {
             <Box sx={{ my: 2 }}>
               <Typography variant="subtitle2">Cantidad</Typography>
               <ItemCounter />
-              <ProducrSizeSelector sizes={product.sizes} />
+              <ProducrSizeSelector sizes={product.sizes} selectedSize={tempProduct.size} onSelectedSize={handleSelectedSize}/>
             </Box>
 
             {/* AddCard */}
             {product.inStock > 0 ? (
               <Button className="circular-btn" color="secondary">
-                Agregar al carrito
+                {
+                  tempProduct.size
+                  ?"Agregar al carrito"
+                  :"Seleccione una talla"
+                }
               </Button>
             ) : (
               <Chip
@@ -89,6 +109,7 @@ export const getStaticPaths: GetStaticPaths = async (ctx) => {
 //- The page must be pre-rendered (for SEO) and be very fast — getStaticProps generates HTML and JSON files, both of which can be cached by a CDN for performance.
 import { GetStaticProps } from "next";
 import { dbProducts } from "@/data";
+import { ISize } from '../../interfaces/products';
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   const { slug = "" } = params as { slug: string }; // your fetch function here
