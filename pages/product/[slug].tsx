@@ -35,17 +35,21 @@ const ProductPage: NextPage<Props> = ({ product }) => {
             <Box sx={{ my: 2 }}>
               <Typography variant="subtitle2">Cantidad</Typography>
               <ItemCounter />
-              <ProducrSizeSelector
-                sizes={product.sizes}
-              />
+              <ProducrSizeSelector sizes={product.sizes} />
             </Box>
 
             {/* AddCard */}
-            <Button className="circular-btn" color="secondary">
-              Agregar al carrito
-            </Button>
-
-            {/* <Chip label='No hay disponibles' color="error" variant="outlined"/> */}
+            {product.inStock > 0 ? (
+              <Button className="circular-btn" color="secondary">
+                Agregar al carrito
+              </Button>
+            ) : (
+              <Chip
+                label="No hay disponibles"
+                color="error"
+                variant="outlined"
+              />
+            )}
 
             {/* Description */}
             <Box sx={{ mt: 3 }}>
@@ -63,20 +67,20 @@ const ProductPage: NextPage<Props> = ({ product }) => {
 // - Only if you need to pre-render a page whose data must be fetched at request time
 // You should use getStaticPaths if you’re statically pre-rendering pages that use dynamic routes
 // You should use getStaticPaths if you’re statically pre-rendering pages that use dynamic routes
-import { GetStaticPaths } from 'next'
+import { GetStaticPaths } from "next";
 
 export const getStaticPaths: GetStaticPaths = async (ctx) => {
-  const productsSlugs = await dbProducts.getAllSlugs();  // your fetch function here 
+  const productsSlugs = await dbProducts.getAllSlugs(); // your fetch function here
 
   return {
-    paths: productsSlugs.map(({slug})=>({
-      params:{
-        slug
-      }
+    paths: productsSlugs.map(({ slug }) => ({
+      params: {
+        slug,
+      },
     })),
-    fallback: "blocking"
-  }
-}
+    fallback: "blocking",
+  };
+};
 
 // You should use getStaticProps when:
 //- The data required to render the page is available at build time ahead of a user’s request.
@@ -84,26 +88,26 @@ export const getStaticPaths: GetStaticPaths = async (ctx) => {
 //- The data can be publicly cached (not user-specific).
 //- The page must be pre-rendered (for SEO) and be very fast — getStaticProps generates HTML and JSON files, both of which can be cached by a CDN for performance.
 import { GetStaticProps } from "next";
-import { dbProducts } from '@/data';
+import { dbProducts } from "@/data";
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
-  const { slug="" } = params as { slug: string }; // your fetch function here
-  const product= await dbProducts.getProductsBySlug(slug);
+  const { slug = "" } = params as { slug: string }; // your fetch function here
+  const product = await dbProducts.getProductsBySlug(slug);
 
-  if(!product){
-    return{
-      redirect:{
-        destination:"/",
-        permanent:false
-      }
-    }
+  if (!product) {
+    return {
+      redirect: {
+        destination: "/",
+        permanent: false,
+      },
+    };
   }
 
   return {
     props: {
-      product
+      product,
     },
-    revalidate:60*60*24
+    revalidate: 60 * 60 * 24,
   };
 };
 
