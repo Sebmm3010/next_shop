@@ -36,7 +36,6 @@ const ProductPage: NextPage<Props> = ({ product }) => {
               <Typography variant="subtitle2">Cantidad</Typography>
               <ItemCounter />
               <ProducrSizeSelector
-                selectedSize={product.sizes[0]}
                 sizes={product.sizes}
               />
             </Box>
