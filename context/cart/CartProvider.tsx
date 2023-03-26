@@ -1,7 +1,8 @@
+import { FC, useReducer, ReactNode, useEffect } from "react";
+import Cookie from "js-cookie";
 import { ICartProduct } from "@/interfaces";
-import { FC, useReducer, ReactNode } from "react";
 import { CartContext, cartReducer } from "./";
-
+Cookie;
 export interface CartState {
   cart: ICartProduct[];
 }
@@ -15,6 +16,21 @@ interface Props {
 }
 export const CartProvider: FC<Props> = ({ children }) => {
   const [state, dispatch] = useReducer(cartReducer, CART_INITIAL_STATE);
+  useEffect(() => {
+    try {
+      const cookieCart = Cookie.get("cart")
+        ? JSON.parse(Cookie.get("cart")!)
+        : [];
+      dispatch({ type: "[Cart] - LoadCart from cookies", payload: cookieCart });
+    } catch (error) {
+      dispatch({ type: "[Cart] - LoadCart from cookies", payload: [] });  
+    }
+  }, []);
+
+  useEffect(() => {
+    if (state.cart.length > 0) Cookie.set("cart", JSON.stringify(state.cart));
+  }, [state.cart]);
+
   const addProductCart = (value: ICartProduct) => {
     const productsInCart = state.cart.some((p) => p._id === value._id);
     // ? Ingresa el producto si no existe en el carro
@@ -41,7 +57,10 @@ export const CartProvider: FC<Props> = ({ children }) => {
       p.quantity += value.quantity;
       return p;
     });
-    dispatch({type:"[Cart] - UpdateProducts in cart", payload:updateProducts})
+    dispatch({
+      type: "[Cart] - UpdateProducts in cart",
+      payload: updateProducts,
+    });
   };
   return (
     <CartContext.Provider
