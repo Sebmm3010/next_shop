@@ -5,10 +5,18 @@ import { CartContext, cartReducer } from "./";
 Cookie;
 export interface CartState {
   cart: ICartProduct[];
+  numberOfItems: number;
+  subTotal: number;
+  iva: number;
+  total: number;
 }
 
 const CART_INITIAL_STATE: CartState = {
   cart: [],
+  numberOfItems: 0,
+  subTotal: 0,
+  iva: 0,
+  total: 0,
 };
 
 interface Props {
@@ -33,21 +41,25 @@ export const CartProvider: FC<Props> = ({ children }) => {
     if (state.cart.length > 0) Cookie.set("cart", JSON.stringify(state.cart));
   }, [state.cart]);
 
-// *Calcular valores para eorder summary
-  useEffect(()=>{
-
-    const numberOfItems= state.cart.reduce((prev, current)=>current.quantity + prev,0);
-    const subTotal= state.cart.reduce((prev, current)=>(current.price*current.quantity)+prev,0);
+  // *Calcular valores para eorder summary
+  useEffect(() => {
+    const numberOfItems = state.cart.reduce(
+      (prev, current) => current.quantity + prev,
+      0
+    );
+    const subTotal = state.cart.reduce(
+      (prev, current) => current.price * current.quantity + prev,
+      0
+    );
     const ivaPorcentaje = Number(process.env.NEXT_PUBLIC_IVA || 0);
-    const orderSummary={
+    const orderSummary = {
       numberOfItems,
       subTotal,
-      iva:subTotal*ivaPorcentaje,
-      total: subTotal *(ivaPorcentaje+1)
-    } 
-    console.log({orderSummary});
-    
-  },[state.cart]);
+      iva: subTotal * ivaPorcentaje,
+      total: subTotal * (ivaPorcentaje + 1),
+    };
+    dispatch({type:"[Cart] - Update order summary", payload:orderSummary});
+  }, [state.cart]);
 
   const addProductCart = (value: ICartProduct) => {
     const productsInCart = state.cart.some((p) => p._id === value._id);
@@ -80,14 +92,17 @@ export const CartProvider: FC<Props> = ({ children }) => {
       payload: updateProducts,
     });
   };
-  
-  const updateProductQuantity=(product:ICartProduct)=>{
-    dispatch({type:"[Cart] - Cambiar cantidad de productos", payload:product})
-  }
 
-  const removeCartProduct=(product:ICartProduct)=>{
-    dispatch({type:"[Cart] - Eliminar producto carrito", payload:product});
-  }
+  const updateProductQuantity = (product: ICartProduct) => {
+    dispatch({
+      type: "[Cart] - Cambiar cantidad de productos",
+      payload: product,
+    });
+  };
+
+  const removeCartProduct = (product: ICartProduct) => {
+    dispatch({ type: "[Cart] - Eliminar producto carrito", payload: product });
+  };
 
   return (
     <CartContext.Provider
@@ -96,7 +111,7 @@ export const CartProvider: FC<Props> = ({ children }) => {
         // *Metodos
         addProductCart,
         updateProductQuantity,
-        removeCartProduct
+        removeCartProduct,
       }}
     >
       {children}
