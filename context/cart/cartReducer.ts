@@ -2,8 +2,9 @@ import { ICartProduct } from "@/interfaces";
 import { CartState } from "./";
 
 type CartActionType =
-  | { type: "[Cart] - LoadCart from cookies", payload:ICartProduct[] }
-  | { type: "[Cart] - UpdateProducts in cart"; payload: ICartProduct[] };
+  | { type: "[Cart] - LoadCart from cookies"; payload: ICartProduct[] }
+  | { type: "[Cart] - Update productos del carro"; payload: ICartProduct[] }
+  | { type: "[Cart] - Cambiar cantidad de productos"; payload: ICartProduct };
 
 export const cartReducer = (
   state: CartState,
@@ -13,14 +14,23 @@ export const cartReducer = (
     case "[Cart] - LoadCart from cookies":
       return {
         ...state,
-        cart:action.payload
+        cart: action.payload,
       };
-   case "[Cart] - UpdateProducts in cart":
+    case "[Cart] - Update productos del carro":
       return {
-         ...state,
-         cart:[...action.payload]
-      }
+        ...state,
+        cart: [...action.payload],
+      };
+    case "[Cart] - Cambiar cantidad de productos":
+      return {
+        ...state,
+        cart: state.cart.map((product) => {
+          if (product._id !== action.payload._id) return product;
+          if (product.size !== action.payload.size) return product;
 
+          return action.payload;
+        }),
+      };
     default:
       return state;
   }

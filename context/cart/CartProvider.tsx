@@ -16,6 +16,8 @@ interface Props {
 }
 export const CartProvider: FC<Props> = ({ children }) => {
   const [state, dispatch] = useReducer(cartReducer, CART_INITIAL_STATE);
+
+  // * Obtener productos del carro
   useEffect(() => {
     try {
       const cookieCart = Cookie.get("cart")
@@ -23,10 +25,10 @@ export const CartProvider: FC<Props> = ({ children }) => {
         : [];
       dispatch({ type: "[Cart] - LoadCart from cookies", payload: cookieCart });
     } catch (error) {
-      dispatch({ type: "[Cart] - LoadCart from cookies", payload: [] });  
+      dispatch({ type: "[Cart] - LoadCart from cookies", payload: [] });
     }
   }, []);
-
+  // * Setear productos del carro
   useEffect(() => {
     if (state.cart.length > 0) Cookie.set("cart", JSON.stringify(state.cart));
   }, [state.cart]);
@@ -36,7 +38,7 @@ export const CartProvider: FC<Props> = ({ children }) => {
     // ? Ingresa el producto si no existe en el carro
     if (!productsInCart)
       return dispatch({
-        type: "[Cart] - UpdateProducts in cart",
+        type: "[Cart] - Update productos del carro",
         payload: [...state.cart, value],
       });
 
@@ -46,7 +48,7 @@ export const CartProvider: FC<Props> = ({ children }) => {
     // ?Validar si el producto existe pero tiene otra talla
     if (!diferentsSizeProductInCart)
       return dispatch({
-        type: "[Cart] - UpdateProducts in cart",
+        type: "[Cart] - Update productos del carro",
         payload: [...state.cart, value],
       });
 
@@ -58,15 +60,20 @@ export const CartProvider: FC<Props> = ({ children }) => {
       return p;
     });
     dispatch({
-      type: "[Cart] - UpdateProducts in cart",
+      type: "[Cart] - Update productos del carro",
       payload: updateProducts,
     });
   };
+  const updateProductQuantity=(product:ICartProduct)=>{
+    dispatch({type:"[Cart] - Cambiar cantidad de productos", payload:product})
+  }
+
   return (
     <CartContext.Provider
       value={{
         ...state,
         addProductCart,
+        updateProductQuantity
       }}
     >
       {children}

@@ -11,19 +11,26 @@ import {
 } from "@mui/material";
 import { ItemCounter } from "../ui";
 import { CartContext } from "@/context";
+import { ICartProduct } from "@/interfaces";
 
 interface Props {
   editable: boolean;
 }
 
 export const CartList: FC<Props> = ({ editable }) => {
-  const { cart } = useContext(CartContext);
+  const { cart, updateProductQuantity } = useContext(CartContext);
+
+  const onNewQuantityValue=(product:ICartProduct, newQuantity:number)=>{
+    product.quantity= newQuantity;
+    updateProductQuantity(product);
+  }
+
   return (
     <>
       {cart.map((product) => (
-        <Grid container spacing={2} sx={{ mb: 1 }} key={product.slug}>
+        <Grid container spacing={2} sx={{ mb: 1 }} key={product.slug+product.size}>
           <Grid item xs={3}>
-            <NextLink href="/product/slug" passHref>
+            <NextLink href={`/product/${product.slug}`} passHref>
               <Link component="span">
                 <CardActionArea>
                   <CardMedia
@@ -39,16 +46,19 @@ export const CartList: FC<Props> = ({ editable }) => {
             <Box display="flex" flexDirection="column">
               <Typography variant="body1">{product.title}</Typography>
               <Typography variant="body1">
-                Talla: <strong>M</strong>
+                Talla: <strong>{product.size}</strong>
               </Typography>
               {editable ? (
                 <ItemCounter
                   quantity={product.quantity}
                   maxValue={10}
-                  onQuantityChange={() => {}}
+                  onQuantityChange={(value) => onNewQuantityValue(product, value)}
                 />
               ) : (
-                <Typography variant="h5">{product.quantity} {product.quantity>1 ? "productos": "producto"}</Typography>
+                <Typography variant="h5">
+                  {product.quantity}{" "}
+                  {product.quantity > 1 ? "productos" : "producto"}
+                </Typography>
               )}
             </Box>
           </Grid>
