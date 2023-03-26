@@ -33,6 +33,22 @@ export const CartProvider: FC<Props> = ({ children }) => {
     if (state.cart.length > 0) Cookie.set("cart", JSON.stringify(state.cart));
   }, [state.cart]);
 
+// *Calcular valores para eorder summary
+  useEffect(()=>{
+
+    const numberOfItems= state.cart.reduce((prev, current)=>current.quantity + prev,0);
+    const subTotal= state.cart.reduce((prev, current)=>(current.price*current.quantity)+prev,0);
+    const ivaPorcentaje = Number(process.env.NEXT_PUBLIC_IVA || 0);
+    const orderSummary={
+      numberOfItems,
+      subTotal,
+      iva:subTotal*ivaPorcentaje,
+      total: subTotal *(ivaPorcentaje+1)
+    } 
+    console.log({orderSummary});
+    
+  },[state.cart]);
+
   const addProductCart = (value: ICartProduct) => {
     const productsInCart = state.cart.some((p) => p._id === value._id);
     // ? Ingresa el producto si no existe en el carro
