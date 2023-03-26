@@ -93,7 +93,7 @@ export const initialData: SeedData = {
         "Estos jeans negros para hombre son el complemento perfecto para cualquier guardarropa. Confeccionados en una tela de alta calidad, son suaves y cómodos al tacto. El corte ajustado los hace ideales para destacar la silueta masculina, y su diseño clásico y atemporal los hace fáciles de combinar con cualquier tipo de camisa, chaqueta o calzado. Además, su color negro profundo los hace ideales para cualquier ocasión, ya sea para un look casual de fin de semana o para un evento más formal. Con detalles de costura de alta calidad y acabados en metal negro, estos jeans no solo son elegantes, sino también duraderos y resistentes al desgaste. No esperes más y añade estos jeans negros a tu armario hoy mismo.",
       images: ["1741416-00-A_0_2000.jpg", "1741416-00-A_1.jpg"],
       inStock: 50,
-      price: 40,
+      price: 30500,
       sizes: ["M", "L", "XL", "XXL"],
       slug: "jeans_negro_hombre",
       type: "pantalon",
