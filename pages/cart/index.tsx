@@ -13,10 +13,10 @@ import { CartList, CartOrderSummary } from "@/components/cart";
 import { CartContext } from '@/context';
 
 const CartPage = () => {
-  const {cart} = useContext(CartContext);
+  const {numberOfItems} = useContext(CartContext);
   return (
     <ShopLayout
-      title={`Carrito${cart.length>=1? `(${cart.length})`: ""}`}
+      title={`NextShop | Carrito ${numberOfItems>9 ? "(+9)": `(${numberOfItems})`}`}
       pageDesc={"Carrito de la tienda"}
     >
       <Typography variant="h1" component="h1">
