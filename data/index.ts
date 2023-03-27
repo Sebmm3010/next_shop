@@ -4,4 +4,4 @@ export * from "./constants"
 
 //? Base de datos seed
 
-export * as seedData from "./products";
+export * as seedData from "./seed-data";

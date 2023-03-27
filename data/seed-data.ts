@@ -1,3 +1,5 @@
+import bcrypt from "bcrypt";
+
 interface SeedProduct {
   description: string;
   images: string[];
@@ -9,6 +11,12 @@ interface SeedProduct {
   title: string;
   type: ValidTypes;
   gender: "hombre" | "mujer" | "infantil" | "unisex";
+}
+interface SeedUsers {
+  name: string;
+  email: string;
+  password: string;
+  role: "admin" | "client";
 }
 
 type ValidSizes =
@@ -26,18 +34,39 @@ type ValidSizes =
   | "37"
   | "40"
   | "43";
-type ValidTypes = "camisa" | "pantalon" | "chaqueta" | "sombrero" | "zapatos" | "vestido";
+type ValidTypes =
+  | "camisa"
+  | "pantalon"
+  | "chaqueta"
+  | "sombrero"
+  | "zapatos"
+  | "vestido";
 
 interface SeedData {
+  users: SeedUsers[];
   products: SeedProduct[];
 }
 
 export const initialData: SeedData = {
+  users: [
+    {
+      name: "Sebastian madero",
+      email: "sebastian@gmail.com",
+      password: bcrypt.hashSync("123456", 6),
+      role: "admin",
+    },
+    {
+      name: "Juan perez",
+      email: "juan@gmail.com",
+      password: bcrypt.hashSync("123456", 6),
+      role: "client",
+    },
+  ],
   products: [
     {
       description:
         "Esta sudadera de manga larga es la prenda perfecta para añadir un toque de color a tu armario. Confeccionada en suave algodón de alta calidad, esta sudadera es cómoda y resistente para el uso diario. El color rojo vibrante es llamativo y atractivo, lo que la convierte en una prenda ideal para cualquier ocasión casual permitiendole estar a lo ultimo de la moda.",
-      images: ["1740176-00-A_1.jpg","1740176-00-A_0_2000.jpg"],
+      images: ["1740176-00-A_1.jpg", "1740176-00-A_0_2000.jpg"],
       inStock: 7,
       price: 50000,
       sizes: ["XS", "S", "M", "L", "XL", "XXL"],
