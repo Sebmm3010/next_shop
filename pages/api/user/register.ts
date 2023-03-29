@@ -2,7 +2,7 @@ import { db } from "@/data";
 import { User } from "@/models";
 import type { NextApiRequest, NextApiResponse } from "next";
 import bcrypt from "bcrypt";
-import { jwt } from "@/utils";
+import { jwt, validation } from "@/utils";
 
 type Data =
   | { msg: string }
@@ -49,10 +49,16 @@ const registerUser = async (
       msg: "Nombre debe ser mayor a 2 caracteres",
     });
   }
+  
+  if(!validation.isValidEmail(email)){
+     return res.status(400).json({
+       msg: "Nombre debe ser mayor a 2 caracteres",
+     });
+  }
 
   await db.connect();
   const user = await User.findOne({ email });
-
+  await db.disconnect();
   if (user) {
     return res.status(400).json({
       msg: "Correo en uso",
