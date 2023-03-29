@@ -2,6 +2,7 @@ import { db } from "@/data";
 import { User } from "@/models";
 import type { NextApiRequest, NextApiResponse } from "next";
 import bcrypt from "bcrypt";
+import { jwt } from "@/utils";
 
 type Data =
   | { msg: string }
@@ -45,10 +46,12 @@ const loginUser = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
       .json({ msg: "Correo o contraseña no validos - contraseña" });
   }
 
-  const { role, name } = user;
+  const { role, name, _id } = user;
+
+  const token= jwt.singToken(_id, email);
 
   return res.status(200).json({
-    token: "", //JWT
+    token, //JWT
     user: {
       name,
       email,
