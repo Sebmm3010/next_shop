@@ -45,7 +45,7 @@ const LoginPage = () => {
       console.log("Error en credenciales");
       setShowError(true);
       setTimeout(() => {
-        setShowError(false)
+        setShowError(false);
       }, 3000);
     }
   };
@@ -78,6 +78,7 @@ const LoginPage = () => {
 
             <Grid item xs={12}>
               <TextField
+                type="email"
                 label="Correo"
                 variant="filled"
                 fullWidth
