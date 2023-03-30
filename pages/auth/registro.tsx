@@ -12,7 +12,7 @@ import {
   Link,
   Chip,
 } from "@mui/material";
-import { Visibility, VisibilityOff, ErrorOutline } from '@mui/icons-material';
+import { Visibility, VisibilityOff, ErrorOutline } from "@mui/icons-material";
 import { AuthLayout } from "@/components/layouts";
 import { validation } from "@/utils";
 import { nextShopApi } from "@/api";
@@ -34,11 +34,16 @@ const RegisterPage = () => {
     formState: { errors },
     watch,
   } = useForm<FormData>();
-  const handleRegister = async({name, email, password}: FormData) => {
+  const handleRegister = async ({ name, email, password }: FormData) => {
+    setShowError(false);
     try {
-      const {data}= await nextShopApi.post("/user/register", {name, email, password})
+      const { data } = await nextShopApi.post("/user/register", {
+        name,
+        email,
+        password,
+      });
       const { token, user } = data;
-      console.log({token, user});
+      console.log({ token, user });
     } catch (error) {
       console.log("Usuario ya registrado");
       setShowError(true);

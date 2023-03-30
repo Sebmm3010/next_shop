@@ -33,6 +33,8 @@ const LoginPage = () => {
   } = useForm<FormData>();
 
   const handleLogin = async ({ email, password }: FormData) => {
+    setShowError(false);
+
     try {
       const { data } = await nextShopApi.post("/user/login", {
         email,
