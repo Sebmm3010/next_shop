@@ -14,6 +14,7 @@ import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useForm } from "react-hook-form";
 import { AuthLayout } from "@/components/layouts";
 import { validation } from "@/utils";
+import { nextShopApi } from "@/api";
 
 interface FormData {
   email: string;
@@ -29,8 +30,14 @@ const LoginPage = () => {
     formState: { errors },
   } = useForm<FormData>();
 
-  const handleLogin = (data: FormData) => {
-    console.log({ data });
+  const handleLogin = async({email, password}: FormData) => {
+    try {
+      const {data} = await nextShopApi.post("/user/login", {email, password})
+      const { token, user }= data;
+      console.log({token, user});
+    } catch (error) {
+      console.log("Error en credenciales")
+    }
   };
 
   return (
