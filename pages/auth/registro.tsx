@@ -26,12 +26,12 @@ const RegisterPage = () => {
           </Grid>
 
           <Grid item xs={12}>
-            <TextField label="Correo" variant="filled" fullWidth />
+            <TextField type="email" label="Correo" variant="filled" fullWidth />
           </Grid>
           <Grid item xs={12}>
             <TextField
               label="Contraseña"
-              type={showPassword ? "password" : "text"}
+              type={!showPassword ? "password" : "text"}
               variant="filled"
               fullWidth
               InputProps={{
@@ -52,7 +52,7 @@ const RegisterPage = () => {
           <Grid item xs={12}>
             <TextField
               label="Confirmar contraseña"
-              type={showPassword ? "password" : "text"}
+              type={!showPassword ? "password" : "text"}
               variant="filled"
               fullWidth
               InputProps={{
@@ -84,7 +84,11 @@ const RegisterPage = () => {
 
           <Grid item xs={12} display="flex" justifyContent="end">
             <NextLink href="/auth/login" passHref>
-              <Link underline="always" component="span">
+              <Link
+                underline="always"
+                component="span"
+                sx={{ ":hover": { color: "#0535f5" } }}
+              >
                 Ya tienes cuenta?
               </Link>
             </NextLink>
