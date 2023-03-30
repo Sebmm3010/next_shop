@@ -9,8 +9,9 @@ import {
   InputAdornment,
   IconButton,
   Link,
+  Chip,
 } from "@mui/material";
-import { Visibility, VisibilityOff } from "@mui/icons-material";
+import { ErrorOutline, Visibility, VisibilityOff } from "@mui/icons-material";
 import { useForm } from "react-hook-form";
 import { AuthLayout } from "@/components/layouts";
 import { validation } from "@/utils";
@@ -23,6 +24,7 @@ interface FormData {
 
 const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const [showError, setShowError] = useState(false);
 
   const {
     register,
@@ -30,13 +32,21 @@ const LoginPage = () => {
     formState: { errors },
   } = useForm<FormData>();
 
-  const handleLogin = async({email, password}: FormData) => {
+  const handleLogin = async ({ email, password }: FormData) => {
     try {
-      const {data} = await nextShopApi.post("/user/login", {email, password})
-      const { token, user }= data;
-      console.log({token, user});
+      const { data } = await nextShopApi.post("/user/login", {
+        email,
+        password,
+      });
+      const { token, user } = data;
+      // Todo: Navigate to main page
+      console.log({ token, user });
     } catch (error) {
-      console.log("Error en credenciales")
+      console.log("Error en credenciales");
+      setShowError(true);
+      setTimeout(() => {
+        setShowError(false)
+      }, 3000);
     }
   };
 
@@ -45,10 +55,25 @@ const LoginPage = () => {
       <form onSubmit={handleSubmit(handleLogin)} noValidate>
         <Box sx={{ width: 350, padding: "10px 20px" }}>
           <Grid container spacing={2}>
-            <Grid item xs={12}>
+            <Grid
+              item
+              xs={12}
+              display="flex"
+              flexDirection="column"
+              justifyContent="center"
+              gap={2}
+            >
               <Typography variant="h1" component="h1" textAlign="center">
                 Iniciar sesión
               </Typography>
+              {showError && (
+                <Chip
+                  className="fadeIn"
+                  label="Correo / Contraseña no validos"
+                  color="error"
+                  icon={<ErrorOutline />}
+                />
+              )}
             </Grid>
 
             <Grid item xs={12}>
