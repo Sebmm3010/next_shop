@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { useRouter } from "next/router";
 import NextLink from "next/link";
 import {
   Box,
@@ -16,6 +17,7 @@ import { useForm } from "react-hook-form";
 import { AuthLayout } from "@/components/layouts";
 import { validation } from "@/utils";
 import { nextShopApi } from "@/api";
+import { AuthContext } from "@/context";
 
 interface FormData {
   email: string;
@@ -26,6 +28,10 @@ const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showError, setShowError] = useState(false);
 
+  const router = useRouter();
+
+  const { loginUser } = useContext(AuthContext);
+
   const {
     register,
     handleSubmit,
@@ -34,22 +40,17 @@ const LoginPage = () => {
 
   const handleLogin = async ({ email, password }: FormData) => {
     setShowError(false);
+    const isValidLogin = await loginUser(email, password);
 
-    try {
-      const { data } = await nextShopApi.post("/user/login", {
-        email,
-        password,
-      });
-      const { token, user } = data;
-      // Todo: Navigate to main page
-      console.log({ token, user });
-    } catch (error) {
-      console.log("Error en credenciales");
+    if (!isValidLogin) {
       setShowError(true);
       setTimeout(() => {
         setShowError(false);
       }, 3000);
+      return;
     }
+
+    router.replace("/");
   };
 
   return (
