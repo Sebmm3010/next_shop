@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import NextLink from "next/link";
+import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
 import {
   Box,
@@ -16,6 +17,7 @@ import { Visibility, VisibilityOff, ErrorOutline } from "@mui/icons-material";
 import { AuthLayout } from "@/components/layouts";
 import { validation } from "@/utils";
 import { nextShopApi } from "@/api";
+import { AuthContext } from "@/context";
 
 interface FormData {
   name: string;
@@ -27,30 +29,34 @@ interface FormData {
 const RegisterPage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showError, setShowError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const router = useRouter();
+
+  const { registerUser } = useContext(AuthContext);
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-    watch,
   } = useForm<FormData>();
+
   const handleRegister = async ({ name, email, password }: FormData) => {
     setShowError(false);
-    try {
-      const { data } = await nextShopApi.post("/user/register", {
-        name,
-        email,
-        password,
-      });
-      const { token, user } = data;
-      console.log({ token, user });
-    } catch (error) {
-      console.log("Usuario ya registrado");
+    const { hasError, message } = await registerUser(name, email, password);
+
+    if (hasError) {
       setShowError(true);
+
+      setErrorMessage(message!);
+
       setTimeout(() => {
         setShowError(false);
       }, 3000);
+
+      return;
     }
+
+    router.replace("/");
   };
   return (
     <AuthLayout title="Registrarse">
