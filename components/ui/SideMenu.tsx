@@ -35,7 +35,7 @@ export const SideMenu = () => {
   const [searchInput, setSearchInput] = useState("");
 
   const { isSideMenuOpen, toogleSideMenu } = useContext(UiContext);
-  const { user, isLogged } = useContext(AuthContext);
+  const { user, isLogged, logoutUser } = useContext(AuthContext);
   const router = useRouter();
 
   const navigate = (url: string) => {
@@ -130,14 +130,14 @@ export const SideMenu = () => {
 
           {/* Salir e ingresar */}
           {isLogged ? (
-            <ListItemButton>
+            <ListItemButton onClick={logoutUser}>
               <ListItemIcon>
                 <LoginOutlined />
               </ListItemIcon>
               <ListItemText primary={"Salir"} />
             </ListItemButton>
           ) : (
-            <ListItemButton onClick={() => navigate("/auth/login")}>
+            <ListItemButton onClick={() => navigate(`/auth/login?p=${router.asPath}`)}>
               <ListItemIcon>
                 <VpnKeyOutlined />
               </ListItemIcon>
@@ -147,9 +147,7 @@ export const SideMenu = () => {
 
           {/* Admin */}
           <Divider />
-          {user?.role === "admin" ? (
-            <AdminPanel/>
-          ) : null}
+          {user?.role === "admin" ? <AdminPanel /> : null}
         </List>
       </Box>
     </Drawer>
