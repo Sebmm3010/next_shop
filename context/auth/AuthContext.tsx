@@ -1,5 +1,6 @@
 import { IUser } from '@/interfaces';
 import { createContext } from 'react';
+import { RegisterUser } from './AuthProvider';
 
 
 interface ContextProps {
@@ -7,6 +8,11 @@ interface ContextProps {
   user?: IUser;
   // *Metodos
   loginUser: (email: string, password: string) => Promise<boolean>;
+  registerUser: (
+    name: string,
+    email: string,
+    password: string
+  ) => Promise<RegisterUser>;
 }
 
 
