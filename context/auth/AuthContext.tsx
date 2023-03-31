@@ -13,6 +13,7 @@ interface ContextProps {
     email: string,
     password: string
   ) => Promise<RegisterUser>;
+  logoutUser: () => void;
 }
 
 

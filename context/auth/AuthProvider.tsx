@@ -1,4 +1,5 @@
 import { FC, useReducer, ReactNode, useEffect } from "react";
+import { useRouter } from "next/router";
 import { AuthContext, authReducer } from "./";
 import { IUser } from "@/interfaces";
 import { nextShopApi } from "@/api";
@@ -24,14 +25,14 @@ interface Props {
 }
 export const AuthProvider: FC<Props> = ({ children }) => {
   const [state, dispatch] = useReducer(authReducer, AUTH_INITIAL_STATE);
+  const router = useRouter();
 
   useEffect(() => {
     checkToken();
   }, []);
 
   const checkToken = async () => {
-
-    if(!Cookies.get("token")) return;
+    if (!Cookies.get("token")) return;
 
     try {
       const { data } = await nextShopApi.get("/user/validate-token");
@@ -96,6 +97,13 @@ export const AuthProvider: FC<Props> = ({ children }) => {
     }
   };
 
+  const logoutUser = () => {
+    Cookies.remove("token");
+    Cookies.remove("cart");
+    router.reload();
+    dispatch({ type: "[Auth] - Logout" });
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -103,6 +111,7 @@ export const AuthProvider: FC<Props> = ({ children }) => {
         // *Metodos
         loginUser,
         registerUser,
+        logoutUser,
       }}
     >
       {children}
