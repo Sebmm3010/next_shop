@@ -16,7 +16,6 @@ import { ErrorOutline, Visibility, VisibilityOff } from "@mui/icons-material";
 import { useForm } from "react-hook-form";
 import { AuthLayout } from "@/components/layouts";
 import { validation } from "@/utils";
-import { nextShopApi } from "@/api";
 import { AuthContext } from "@/context";
 
 interface FormData {
@@ -49,8 +48,8 @@ const LoginPage = () => {
       }, 3000);
       return;
     }
-
-    router.replace("/");
+    const destination= router.query.p?.toString() || "/"
+    router.replace(destination);
   };
 
   return (
