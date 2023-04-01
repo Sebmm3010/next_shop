@@ -37,6 +37,8 @@ const LoginPage = () => {
     formState: { errors },
   } = useForm<FormData>();
 
+  const destination = router.query.p?.toString() || "/";
+
   const handleLogin = async ({ email, password }: FormData) => {
     setShowError(false);
     const isValidLogin = await loginUser(email, password);
@@ -48,7 +50,6 @@ const LoginPage = () => {
       }, 3000);
       return;
     }
-    const destination= router.query.p?.toString() || "/"
     router.replace(destination);
   };
 
@@ -135,7 +136,7 @@ const LoginPage = () => {
             </Grid>
 
             <Grid item xs={12} display="flex" justifyContent="end">
-              <NextLink href="/auth/registro" passHref>
+              <NextLink href={`/auth/registro?p=${destination}`} passHref>
                 <Link
                   underline="always"
                   component="span"
