@@ -9,6 +9,7 @@ export interface CartState {
   subTotal: number;
   iva: number;
   total: number;
+  isCartLoaded: boolean;
 }
 
 const CART_INITIAL_STATE: CartState = {
@@ -17,6 +18,7 @@ const CART_INITIAL_STATE: CartState = {
   subTotal: 0,
   iva: 0,
   total: 0,
+  isCartLoaded:false
 };
 
 interface Props {

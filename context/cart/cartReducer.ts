@@ -24,6 +24,7 @@ export const cartReducer = (
     case "[Cart] - LoadCart from cookies":
       return {
         ...state,
+        isCartLoaded: true,
         cart: action.payload,
       };
     case "[Cart] - Update productos del carro":
@@ -50,12 +51,12 @@ export const cartReducer = (
         }),
       };
 
-      case "[Cart] - Update order summary":{
-        return{
-          ...state,
-          ...action.payload
-        }
-      }
+    case "[Cart] - Update order summary": {
+      return {
+        ...state,
+        ...action.payload,
+      };
+    }
     default:
       return state;
   }

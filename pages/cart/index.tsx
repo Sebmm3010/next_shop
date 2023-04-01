@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useEffect } from "react";
 import {
   Grid,
   Typography,
@@ -10,13 +10,27 @@ import {
 } from "@mui/material";
 import { ShopLayout } from "@/components/layouts";
 import { CartList, CartOrderSummary } from "@/components/cart";
-import { CartContext } from '@/context';
+import { CartContext } from "@/context";
+import { useRouter } from "next/router";
 
 const CartPage = () => {
-  const {numberOfItems} = useContext(CartContext);
+  const { numberOfItems, isCartLoaded } = useContext(CartContext);
+  const router = useRouter();
+  useEffect(() => {
+    if (isCartLoaded && numberOfItems === 0) {
+      router.replace("/cart/empty");
+    }
+  }, [isCartLoaded, numberOfItems, router]);
+
+  if (numberOfItems === 0) {
+    return <></>;
+  }
+
   return (
     <ShopLayout
-      title={`NextShop | Carrito ${numberOfItems>9 ? "(+9)": `(${numberOfItems})`}`}
+      title={`NextShop | Carrito ${
+        numberOfItems > 9 ? "(+9)" : `(${numberOfItems})`
+      }`}
       pageDesc={"Carrito de la tienda"}
     >
       <Typography variant="h1" component="h1">
