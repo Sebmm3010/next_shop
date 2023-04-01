@@ -65,24 +65,34 @@ const ProductPage: NextPage<Props> = ({ product }) => {
               {product.title}
             </Typography>
             <Typography variant="subtitle1" component="h2">
-              ${product.price}
+              {currency.format(product.price)}
             </Typography>
 
             {/* Cantidad */}
             <Box sx={{ my: 2 }}>
               <Typography variant="subtitle2">Cantidad</Typography>
-              <ItemCounter quantity={tempProduct.quantity} onQuantityChange={handleSelectedQuantity} maxValue={product.inStock}/>
-              <ProducrSizeSelector sizes={product.sizes} selectedSize={tempProduct.size} onSelectedSize={handleSelectedSize}/>
+              <ItemCounter
+                quantity={tempProduct.quantity}
+                onQuantityChange={handleSelectedQuantity}
+                maxValue={product.inStock}
+              />
+              <ProducrSizeSelector
+                sizes={product.sizes}
+                selectedSize={tempProduct.size}
+                onSelectedSize={handleSelectedSize}
+              />
             </Box>
 
             {/* AddCard */}
             {product.inStock > 0 ? (
-              <Button className="circular-btn" color="secondary" onClick={addProduct}>
-                {
-                  tempProduct.size
-                  ?"Agregar al carrito"
-                  :"Seleccione una talla"
-                }
+              <Button
+                className="circular-btn"
+                color="secondary"
+                onClick={addProduct}
+              >
+                {tempProduct.size
+                  ? "Agregar al carrito"
+                  : "Seleccione una talla"}
               </Button>
             ) : (
               <Chip
@@ -126,6 +136,7 @@ export const getStaticPaths: GetStaticPaths = async (ctx) => {
 
 import { GetStaticProps } from "next";
 import { dbProducts } from "@/data";
+import { currency } from '@/utils';
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   const { slug = "" } = params as { slug: string }; // your fetch function here
