@@ -48,7 +48,7 @@ const RegisterPage = () => {
     if (hasError) {
       setShowError(true);
 
-      setErrorMessage(message!);
+      // setErrorMessage(message!);
 
       setTimeout(() => {
         setShowError(false);
