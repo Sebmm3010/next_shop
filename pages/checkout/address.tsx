@@ -67,29 +67,29 @@ const AddressPage = () => (
   </ShopLayout>
 );
 
-export const getServerSideProps: GetServerSideProps = async ({ req }) => {
-  const { token = "" } = req.cookies;
-  let isValidaToken = false;
+// export const getServerSideProps: GetServerSideProps = async ({ req }) => {
+//   const { token = "" } = req.cookies;
+//   let isValidaToken = false;
 
-  try {
-    await jwt.isValidaToken(token);
-    isValidaToken = true;
-  } catch (error) {
-    isValidaToken = false;
-  }
+//   try {
+//     await jwt.isValidaToken(token);
+//     isValidaToken = true;
+//   } catch (error) {
+//     isValidaToken = false;
+//   }
 
-  if (!isValidaToken) {
-    return {
-      redirect: {
-        destination: "/auth/login?p=/checkout/address",
-        permanent: false,
-      },
-    };
-  }
+//   if (!isValidaToken) {
+//     return {
+//       redirect: {
+//         destination: "/auth/login?p=/checkout/address",
+//         permanent: false,
+//       },
+//     };
+//   }
 
-  return {
-    props: {},
-  };
-};
+//   return {
+//     props: {},
+//   };
+// };
 
 export default AddressPage;
