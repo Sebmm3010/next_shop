@@ -100,6 +100,14 @@ export const AuthProvider: FC<Props> = ({ children }) => {
   const logoutUser = () => {
     Cookies.remove("token");
     Cookies.remove("cart");
+    Cookies.remove("name");
+    Cookies.remove("lastName");
+    Cookies.remove("address1");
+    Cookies.remove("address2");
+    Cookies.remove("city");
+    Cookies.remove("postalCode");
+    Cookies.remove("country");
+    Cookies.remove("phone");
     router.reload();
     dispatch({ type: "[Auth] - Logout" });
   };
