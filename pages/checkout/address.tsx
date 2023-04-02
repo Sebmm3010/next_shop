@@ -145,7 +145,11 @@ const AddressPage = () => {
                   required: "Este campo es obligatorio",
                 })}
                 select
-                defaultValue={countries[0].code}
+                defaultValue={
+                  Cookies.get("country")
+                    ? Cookies.get("country")
+                    : countries[0].code
+                }
                 variant="filled"
                 label="Pais*"
                 error={!!errors.country}

@@ -12,6 +12,7 @@ import {
 import { ItemCounter } from "../ui";
 import { CartContext } from "@/context";
 import { ICartProduct } from "@/interfaces";
+import { currency } from "@/utils";
 
 interface Props {
   editable: boolean;
@@ -28,7 +29,12 @@ export const CartList: FC<Props> = ({ editable }) => {
   return (
     <>
       {cart.map((product) => (
-        <Grid container spacing={2} sx={{ mb: 1 }} key={product.slug+product.size}>
+        <Grid
+          container
+          spacing={2}
+          sx={{ mb: 1 }}
+          key={product.slug + product.size}
+        >
           <Grid item xs={3}>
             <NextLink href={`/product/${product.slug}`} passHref>
               <Link component="span">
@@ -52,12 +58,14 @@ export const CartList: FC<Props> = ({ editable }) => {
                 <ItemCounter
                   quantity={product.quantity}
                   maxValue={10}
-                  onQuantityChange={(value) => onNewQuantityValue(product, value)}
+                  onQuantityChange={(value) =>
+                    onNewQuantityValue(product, value)
+                  }
                 />
               ) : (
                 <Typography variant="h5">
                   {product.quantity}{" "}
-                  {product.quantity > 1 ? "productos" : "producto"}
+                  {product.quantity > 1 ? "Items" : "Item"}
                 </Typography>
               )}
             </Box>
@@ -69,10 +77,16 @@ export const CartList: FC<Props> = ({ editable }) => {
             alignItems="center"
             flexDirection="column"
           >
-            <Typography variant="subtitle1">{`$${product.price*product.quantity}`}</Typography>
+            <Typography variant="subtitle1">{`${currency.format(
+              product.price * product.quantity
+            )}`}</Typography>
             {/* Editable */}
             {editable && (
-              <Button color="secondary" variant="text" onClick={()=>removeCartProduct(product)}>
+              <Button
+                color="secondary"
+                variant="text"
+                onClick={() => removeCartProduct(product)}
+              >
                 Eliminar
               </Button>
             )}

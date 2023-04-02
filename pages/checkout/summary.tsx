@@ -1,4 +1,6 @@
+import { useContext } from "react";
 import NextLink from "next/link";
+
 import {
   Grid,
   Typography,
@@ -9,13 +11,22 @@ import {
   Button,
   Link,
 } from "@mui/material";
+
 import { ShopLayout } from "@/components/layouts";
 import { CartList, CartOrderSummary } from "@/components/cart";
+import { CartContext } from "@/context";
+import { countries } from "@/utils";
 
 const SummaryPage = () => {
+  const { shippingAddress, numberOfItems } = useContext(CartContext);
+  if (!shippingAddress) {
+    return <></>;
+  }
   return (
     <ShopLayout title={`Resumen de la orden`} pageDesc={"Resumen de la orden"}>
-      <Typography variant="h1" component="h1">Resumen de la orden</Typography>
+      <Typography variant="h1" component="h1">
+        Resumen de la orden
+      </Typography>
       <Grid container>
         <Grid item xs={12} sm={7}>
           <CartList editable={false} />
@@ -24,7 +35,7 @@ const SummaryPage = () => {
           <Card className="summary-card">
             <CardContent>
               <Typography variant="h2" component="h2">
-                Resumen(3 productos)
+                Resumen({numberOfItems} productos)
               </Typography>
               <Divider sx={{ my: 1 }} />
 
@@ -37,12 +48,15 @@ const SummaryPage = () => {
               </Box>
 
               <Typography variant="subtitle1">Direcion de entrega</Typography>
-              <Typography>Sebastian</Typography>
-              <Typography>Algun lugar por la montaña</Typography>
-              <Typography>Cartagen</Typography>
-              <Typography>13044</Typography>
-              <Typography>Colombia</Typography>
-              <Typography>+57 3002236417</Typography>
+              <Typography>
+                {shippingAddress?.name} {shippingAddress?.lastName}
+              </Typography>
+              <Typography>{shippingAddress?.address1}</Typography>
+              <Typography>{shippingAddress?.address2}</Typography>
+              <Typography>{shippingAddress?.city}</Typography>
+              <Typography>{shippingAddress?.postalCode}</Typography>
+              <Typography>{countries.find(c=> (c.code===shippingAddress.country))?.name}</Typography>
+              <Typography>{shippingAddress?.phone}</Typography>
 
               <Divider sx={{ my: 1 }} />
               <Box display="flex" justifyContent="end">
