@@ -9,12 +9,13 @@ interface ContextProps {
   iva: number;
   total: number;
   isCartLoaded: boolean;
-  shippingAddress?: ShippingAddress
+  shippingAddress?: ShippingAddress;
 
   // *Metodos
   addProductCart: (value: ICartProduct) => void;
   updateProductQuantity: (product: ICartProduct) => void;
   removeCartProduct: (product: ICartProduct) => void;
+  updateAddress: (newAddress: ShippingAddress) => void;
 }
 
 export const CartContext = createContext({} as ContextProps);

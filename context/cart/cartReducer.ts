@@ -7,6 +7,7 @@ type CartActionType =
   | { type: "[Cart] - Cambiar cantidad de productos"; payload: ICartProduct }
   | { type: "[Cart] - Eliminar producto carrito"; payload: ICartProduct }
   | { type: "[Cart] - Load Address from Cookies"; payload: ShippingAddress }
+  | { type: "[Cart] - Update Address from Cookies"; payload: ShippingAddress }
   | {
       type: "[Cart] - Update order summary";
       payload: {
@@ -59,11 +60,17 @@ export const cartReducer = (
       };
     }
 
-    case "[Cart] - Load Address from Cookies":{
-      return{
+    case "[Cart] - Load Address from Cookies": {
+      return {
         ...state,
-        shippingAddress:action.payload
-      }
+        shippingAddress: action.payload,
+      };
+    }
+    case "[Cart] - Update Address from Cookies": {
+      return {
+        ...state,
+        shippingAddress: action.payload,
+      };
     }
     default:
       return state;

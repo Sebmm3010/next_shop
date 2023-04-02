@@ -23,7 +23,6 @@ export interface CartState {
   shippingAddress?: ShippingAddress;
 }
 
-
 const CART_INITIAL_STATE: CartState = {
   cart: [],
   numberOfItems: 0,
@@ -71,7 +70,6 @@ export const CartProvider: FC<Props> = ({ children }) => {
       });
     }
   }, []);
-  
 
   // * Setear productos del carro
   useEffect(() => {
@@ -142,6 +140,21 @@ export const CartProvider: FC<Props> = ({ children }) => {
     dispatch({ type: "[Cart] - Eliminar producto carrito", payload: product });
   };
 
+  const updateAddress = (newAddress: ShippingAddress) => {
+    Cookies.set("name", newAddress.name);
+    Cookies.set("lastName", newAddress.lastName);
+    Cookies.set("address1", newAddress.address1);
+    Cookies.set("address2", newAddress.address2 || "");
+    Cookies.set("city", newAddress.city);
+    Cookies.set("postalCode", newAddress.postalCode);
+    Cookies.set("country", newAddress.country);
+    Cookies.set("phone", newAddress.phone);
+    dispatch({
+      type: "[Cart] - Update Address from Cookies",
+      payload: newAddress,
+    });
+  };
+
   return (
     <CartContext.Provider
       value={{
@@ -150,6 +163,7 @@ export const CartProvider: FC<Props> = ({ children }) => {
         addProductCart,
         updateProductQuantity,
         removeCartProduct,
+        updateAddress,
       }}
     >
       {children}

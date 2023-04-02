@@ -1,3 +1,4 @@
+import { useContext } from "react";
 import { useRouter } from "next/router";
 import {
   Typography,
@@ -12,6 +13,7 @@ import { ShopLayout } from "@/components/layouts";
 import { countries } from "@/utils";
 import { useForm } from "react-hook-form";
 import Cookies from "js-cookie";
+import { CartContext } from "@/context";
 
 interface FormData {
   name: string;
@@ -38,6 +40,7 @@ const getAddressFromCookies = (): FormData => {
 };
 
 const AddressPage = () => {
+  const { updateAddress, shippingAddress } = useContext(CartContext);
   const router = useRouter();
   const {
     register,
@@ -48,15 +51,9 @@ const AddressPage = () => {
   });
 
   const onSubmit = (data: FormData) => {
-    console.log({ data });
-    Cookies.set("name", data.name);
-    Cookies.set("lastName", data.lastName);
-    Cookies.set("address1", data.address1);
-    Cookies.set("address2", data.address2 || "");
-    Cookies.set("city", data.city);
-    Cookies.set("postalCode", data.postalCode);
-    Cookies.set("country", data.country);
-    Cookies.set("phone", data.phone);
+
+    updateAddress(data);
+
     router.push("/checkout/summary");
   };
 
