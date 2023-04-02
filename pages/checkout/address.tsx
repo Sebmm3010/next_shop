@@ -1,10 +1,10 @@
+import { useRouter } from "next/router";
 import {
   Typography,
   Grid,
   TextField,
   FormControl,
   Box,
-  Select,
   MenuItem,
   Button,
 } from "@mui/material";
@@ -17,41 +17,47 @@ interface FormData {
   name: string;
   lastName: string;
   address1: string;
-  address2: string;
+  address2?: string;
   city: string;
   postalCode: string;
   country: string;
   phone: string;
 }
 
+const getAddressFromCookies = (): FormData => {
+  return {
+    name: Cookies.get("name") || "",
+    lastName: Cookies.get("lastName") || "",
+    address1: Cookies.get("address1") || "",
+    address2: Cookies.get("address2") || "",
+    city: Cookies.get("city") || "",
+    postalCode: Cookies.get("postalCode") || "",
+    country: Cookies.get("country") || "",
+    phone: Cookies.get("phone") || "",
+  };
+};
+
 const AddressPage = () => {
+  const router = useRouter();
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<FormData>({
-    defaultValues: {
-      name: "",
-      lastName: "",
-      address1: "",
-      address2: "",
-      city: "",
-      postalCode: "",
-      country: countries[0].code,
-      phone: "",
-    },
+    defaultValues: getAddressFromCookies(),
   });
 
   const onSubmit = (data: FormData) => {
-    console.log({data});
-    // Cookies.set("name", data.name);
-    // Cookies.set("lastName", data.lastName);
-    // Cookies.set("address1", data.address1);
-    // Cookies.set("address2", data.address2 || "");
-    // Cookies.set("city", data.city);
-    // Cookies.set("postalCode", data.postalCode);
-    // Cookies.set("country", data.country);
-    // Cookies.set("phone", data.phone);
+    console.log({ data });
+    Cookies.set("name", data.name);
+    Cookies.set("lastName", data.lastName);
+    Cookies.set("address1", data.address1);
+    Cookies.set("address2", data.address2 || "");
+    Cookies.set("city", data.city);
+    Cookies.set("postalCode", data.postalCode);
+    Cookies.set("country", data.country);
+    Cookies.set("phone", data.phone);
+    router.push("/checkout/summary");
   };
 
   return (

@@ -1,8 +1,18 @@
 import { FC, useReducer, ReactNode, useEffect } from "react";
-import Cookie from "js-cookie";
+import Cookies from "js-cookie";
 import { ICartProduct } from "@/interfaces";
 import { CartContext, cartReducer } from "./";
-Cookie;
+
+export interface ShippingAddress {
+  name: string;
+  lastName: string;
+  address1: string;
+  address2?: string;
+  city: string;
+  postalCode: string;
+  country: string;
+  phone: string;
+}
 export interface CartState {
   cart: ICartProduct[];
   numberOfItems: number;
@@ -10,7 +20,9 @@ export interface CartState {
   iva: number;
   total: number;
   isCartLoaded: boolean;
+  shippingAddress?: ShippingAddress;
 }
+
 
 const CART_INITIAL_STATE: CartState = {
   cart: [],
@@ -18,7 +30,8 @@ const CART_INITIAL_STATE: CartState = {
   subTotal: 0,
   iva: 0,
   total: 0,
-  isCartLoaded:false
+  isCartLoaded: false,
+  shippingAddress: undefined,
 };
 
 interface Props {
@@ -30,17 +43,39 @@ export const CartProvider: FC<Props> = ({ children }) => {
   // * Obtener productos del carro
   useEffect(() => {
     try {
-      const cookieCart = Cookie.get("cart")
-        ? JSON.parse(Cookie.get("cart")!)
+      const cookieCart = Cookies.get("cart")
+        ? JSON.parse(Cookies.get("cart")!)
         : [];
       dispatch({ type: "[Cart] - LoadCart from cookies", payload: cookieCart });
     } catch (error) {
       dispatch({ type: "[Cart] - LoadCart from cookies", payload: [] });
     }
   }, []);
+
+  // *Obtener la direccion de envio por cookies
+  useEffect(() => {
+    if (Cookies.get("name")) {
+      const addressData = {
+        name: Cookies.get("name") || "",
+        lastName: Cookies.get("lastName") || "",
+        address1: Cookies.get("address1") || "",
+        address2: Cookies.get("address2") || "",
+        city: Cookies.get("city") || "",
+        postalCode: Cookies.get("postalCode") || "",
+        country: Cookies.get("country") || "",
+        phone: Cookies.get("phone") || "",
+      };
+      dispatch({
+        type: "[Cart] - Load Address from Cookies",
+        payload: addressData,
+      });
+    }
+  }, []);
+  
+
   // * Setear productos del carro
   useEffect(() => {
-    if (state.cart.length > 0) Cookie.set("cart", JSON.stringify(state.cart));
+    if (state.cart.length > 0) Cookies.set("cart", JSON.stringify(state.cart));
   }, [state.cart]);
 
   // *Calcular valores para eorder summary
@@ -60,9 +95,10 @@ export const CartProvider: FC<Props> = ({ children }) => {
       iva: subTotal * ivaPorcentaje,
       total: subTotal * (ivaPorcentaje + 1),
     };
-    dispatch({type:"[Cart] - Update order summary", payload:orderSummary});
+    dispatch({ type: "[Cart] - Update order summary", payload: orderSummary });
   }, [state.cart]);
 
+  // *Funciones del context
   const addProductCart = (value: ICartProduct) => {
     const productsInCart = state.cart.some((p) => p._id === value._id);
     // ? Ingresa el producto si no existe en el carro
