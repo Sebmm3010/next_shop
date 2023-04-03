@@ -1,5 +1,6 @@
 import NextAuth, { NextAuthOptions } from "next-auth";
 import GithubProvider from "next-auth/providers/github";
+import GoogleProvider from "next-auth/providers/google";
 import Credencials from "next-auth/providers/credentials";
 import { dbUsers } from "@/data";
 
@@ -33,6 +34,10 @@ export const authOptions: NextAuthOptions = {
       clientId: process.env.GITHUB_ID || "",
       clientSecret: process.env.GITHUB_SECRET || "",
     }),
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID || "",
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET || "",
+    }),
   ],
 
   callbacks: {
@@ -46,7 +51,7 @@ export const authOptions: NextAuthOptions = {
               user?.email || "",
               user?.name || ""
             );
-          break;
+            break;
           case "credentials":
             token.user = user;
             break;
