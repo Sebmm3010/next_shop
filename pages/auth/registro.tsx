@@ -1,6 +1,8 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { GetServerSideProps } from "next";
 import NextLink from "next/link";
 import { useRouter } from "next/router";
+import { signIn, getSession } from "next-auth/react";
 import { useForm } from "react-hook-form";
 import {
   Box,
@@ -16,7 +18,6 @@ import {
 import { Visibility, VisibilityOff, ErrorOutline } from "@mui/icons-material";
 import { AuthLayout } from "@/components/layouts";
 import { validation } from "@/utils";
-import { nextShopApi } from "@/api";
 import { AuthContext } from "@/context";
 
 interface FormData {
@@ -29,11 +30,20 @@ interface FormData {
 const RegisterPage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showError, setShowError] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
   const router = useRouter();
 
   const { registerUser } = useContext(AuthContext);
-  
+
+  useEffect(() => {
+    if (router.query.error) {
+      setShowError(true);
+      setTimeout(() => {
+        setShowError(false);
+      }, 3000);
+      return;
+    }
+  }, [router.query.error]);
+
   const destination = router.query.p?.toString() || "/";
   const {
     register,
@@ -57,7 +67,7 @@ const RegisterPage = () => {
       return;
     }
 
-    router.replace(destination);
+    await signIn("credentials", { email, password });
   };
   return (
     <AuthLayout title="Registrarse">
@@ -205,6 +215,26 @@ const RegisterPage = () => {
       </form>
     </AuthLayout>
   );
+};
+
+export const getServerSideProps: GetServerSideProps = async ({
+  req,
+  query,
+}) => {
+  const session = await getSession({ req });
+  const { p = "/" } = query;
+  if (session) {
+    return {
+      redirect: {
+        destination: p.toString(),
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: {},
+  };
 };
 
 export default RegisterPage;

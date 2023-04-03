@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useEffect, useState } from "react";
 import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
 import NextLink from "next/link";
@@ -18,7 +18,6 @@ import { ErrorOutline, Visibility, VisibilityOff } from "@mui/icons-material";
 import { useForm } from "react-hook-form";
 import { AuthLayout } from "@/components/layouts";
 import { validation } from "@/utils";
-import { AuthContext } from "@/context";
 interface FormData {
   email: string;
   password: string;
@@ -30,7 +29,15 @@ const LoginPage = () => {
 
   const router = useRouter();
 
-  const { loginUser } = useContext(AuthContext);
+  useEffect(() => {
+    if (router.query.error) {
+      setShowError(true);
+      setTimeout(() => {
+        setShowError(false);
+      }, 3000);
+      return;
+    }
+  }, [router.query.error]);
 
   const {
     register,
@@ -39,20 +46,19 @@ const LoginPage = () => {
   } = useForm<FormData>();
 
   const destination = router.query.p?.toString() || "/";
-
   const handleLogin = async ({ email, password }: FormData) => {
     setShowError(false);
     await signIn("credentials", { email, password });
 
     // const isValidLogin = await loginUser(email, password);
 
-    // if (!isValidLogin) {
-    //   setShowError(true);
-    //   setTimeout(() => {
-    //     setShowError(false);
-    //   }, 3000);
-    //   return;
-    // }
+    if (router.query.error) {
+      setShowError(true);
+      setTimeout(() => {
+        setShowError(false);
+      }, 3000);
+      return;
+    }
     // router.replace(destination);
   };
 
