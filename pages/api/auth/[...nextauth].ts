@@ -39,7 +39,13 @@ export const authOptions: NextAuthOptions = {
       clientSecret: process.env.GOOGLE_CLIENT_SECRET || "",
     }),
   ],
+  // Pages
+  pages:{
+    signIn:"/auth/login",
+    newUser:"/auth/register"
+  },
 
+  // Callbacks
   callbacks: {
     async jwt({ token, account, user }) {
       // console.log({ token, account, user });
