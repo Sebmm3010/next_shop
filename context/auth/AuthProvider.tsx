@@ -86,7 +86,7 @@ export const AuthProvider: FC<Props> = ({ children }) => {
       const { token, user } = data;
 
       Cookies.set("token", token);
-      dispatch({ type: "[Auth] - Login", payload: user });
+      dispatch({ type: "[Auth] - Register-Login", payload: user });
 
       return {
         hasError: false,
