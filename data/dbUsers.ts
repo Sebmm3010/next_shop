@@ -33,7 +33,7 @@ export const oAuthToDbUser = async (oAuthEmail: string, oAuthName: string) => {
   if (user) {
     await db.disconnect();
     const { _id, name, email, role } = user;
-    return { id:_id, name, email, role };
+    return { _id, name, email, role };
   }
   const newUser = new User({
     email: oAuthEmail,
@@ -44,5 +44,5 @@ export const oAuthToDbUser = async (oAuthEmail: string, oAuthName: string) => {
   await newUser.save();
   await db.disconnect();
   const { _id, name, email, role } = newUser;
-  return { id:_id, name, email, role };
+  return { _id, name, email, role };
 };
