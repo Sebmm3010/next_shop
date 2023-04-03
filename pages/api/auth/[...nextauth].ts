@@ -3,7 +3,6 @@ import GithubProvider from "next-auth/providers/github";
 import Credencials from "next-auth/providers/credentials";
 import { dbUsers } from "@/data";
 
-
 export const authOptions: NextAuthOptions = {
   // Configure one or more authentication providers
   providers: [
@@ -23,7 +22,10 @@ export const authOptions: NextAuthOptions = {
       },
       async authorize(credentials) {
         // return { id: "1", name: "J Smith", email: "jsmith@example.com",role: "client",}
-        return await dbUsers.checkUserEmailPassword(credentials!.email, credentials!.password)
+        return await dbUsers.checkUserEmailPassword(
+          credentials!.email,
+          credentials!.password
+        );
       },
     }),
     // ...add more providers here
@@ -35,12 +37,16 @@ export const authOptions: NextAuthOptions = {
 
   callbacks: {
     async jwt({ token, account, user }) {
-      // console.log({token, account, user});
+      // console.log({ token, account, user });
       if (account) {
         token.accessToken = account.access_token;
         switch (account.type) {
           case "oauth":
-          // TODO: crear usuario o verificar si existe en base de datos
+            token.user = await dbUsers.oAuthToDbUser(
+              user?.email || "",
+              user?.name || ""
+            );
+          break;
           case "credentials":
             token.user = user;
             break;
