@@ -199,7 +199,7 @@ const RegisterPage = () => {
               </Button>
             </Grid>
 
-            <Grid item xs={12} display="flex" justifyContent="end">
+            <Grid item xs={12} display="flex" justifyContent="start">
               <NextLink href={`/auth/login?p=${destination}`} passHref>
                 <Link
                   underline="always"

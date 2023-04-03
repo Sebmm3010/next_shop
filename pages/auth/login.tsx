@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
 import NextLink from "next/link";
-import { signIn, getSession } from "next-auth/react";
+import { signIn, getSession, getProviders } from "next-auth/react";
 import {
   Box,
   Grid,
@@ -13,6 +13,7 @@ import {
   IconButton,
   Link,
   Chip,
+  Divider,
 } from "@mui/material";
 import { ErrorOutline, Visibility, VisibilityOff } from "@mui/icons-material";
 import { useForm } from "react-hook-form";
@@ -26,9 +27,27 @@ interface FormData {
 const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showError, setShowError] = useState(false);
+  const [providers, setProviders] = useState<any>({});
 
   const router = useRouter();
 
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormData>();
+
+  const destination = router.query.p?.toString() || "/";
+
+  //Setear los providers que tengo
+  useEffect(() => {
+    getProviders().then((prov) => {
+      // console.log(prov);
+      setProviders(prov);
+    });
+  }, []);
+
+  // Error de autenticacion
   useEffect(() => {
     if (router.query.error) {
       setShowError(true);
@@ -39,26 +58,11 @@ const LoginPage = () => {
     }
   }, [router.query.error]);
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<FormData>();
-
-  const destination = router.query.p?.toString() || "/";
   const handleLogin = async ({ email, password }: FormData) => {
     setShowError(false);
     await signIn("credentials", { email, password });
 
     // const isValidLogin = await loginUser(email, password);
-
-    if (router.query.error) {
-      setShowError(true);
-      setTimeout(() => {
-        setShowError(false);
-      }, 3000);
-      return;
-    }
     // router.replace(destination);
   };
 
@@ -144,7 +148,33 @@ const LoginPage = () => {
               </Button>
             </Grid>
 
-            <Grid item xs={12} display="flex" justifyContent="end">
+            <Grid
+              item
+              xs={12}
+              display="flex"
+              flexDirection="column"
+              justifyContent="end"
+            >
+              <Divider sx={{ width: "100%", mb: 2 }} />
+              {Object.values(providers)
+                .filter((provider: any) => provider.id !== "credentials")
+                .map((provider: any) => {
+                  return (
+                    <Button
+                      key={provider.id}
+                      onClick={() => signIn(provider.id)}
+                      variant="outlined"
+                      fullWidth
+                      color="primary"
+                      sx={{ mb: 1 }}
+                    >
+                      {provider.name}
+                    </Button>
+                  );
+                })}
+            </Grid>
+
+            <Grid item xs={12} display="flex" justifyContent="start">
               <NextLink href={`/auth/registro?p=${destination}`} passHref>
                 <Link
                   underline="always"
