@@ -27,11 +27,10 @@ interface Props {
 export const AuthProvider: FC<Props> = ({ children }) => {
   const [state, dispatch] = useReducer(authReducer, AUTH_INITIAL_STATE);
   const { data, status } = useSession();
-  const router = useRouter();
 
   useEffect(() => {
     if (status === "authenticated") {
-      console.log(data?.user);
+      // console.log(data?.user);
       dispatch({ type: "[Auth] - Login", payload: data?.user as IUser});
     }
   }, [status, data]);
