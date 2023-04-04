@@ -1,4 +1,5 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
+import { useRouter } from "next/router";
 import NextLink from "next/link";
 
 import {
@@ -16,9 +17,18 @@ import { ShopLayout } from "@/components/layouts";
 import { CartList, CartOrderSummary } from "@/components/cart";
 import { CartContext } from "@/context";
 import { countries } from "@/utils";
+import Cookies from "js-cookie";
 
 const SummaryPage = () => {
   const { shippingAddress, numberOfItems } = useContext(CartContext);
+  const router=useRouter();
+
+  useEffect(() => {
+    if (!Cookies.get("name")) {
+      router.push("/checkout/address")
+    }
+  }, [router]);
+
   if (!shippingAddress) {
     return <></>;
   }
@@ -55,7 +65,12 @@ const SummaryPage = () => {
               <Typography>{shippingAddress?.address2}</Typography>
               <Typography>{shippingAddress?.city}</Typography>
               <Typography>{shippingAddress?.postalCode}</Typography>
-              <Typography>{countries.find(c=> (c.code===shippingAddress.country))?.name}</Typography>
+              <Typography>
+                {
+                  countries.find((c) => c.code === shippingAddress.country)
+                    ?.name
+                }
+              </Typography>
               <Typography>{shippingAddress?.phone}</Typography>
 
               <Divider sx={{ my: 1 }} />
@@ -70,7 +85,7 @@ const SummaryPage = () => {
 
               <Box sx={{ mt: 3 }}>
                 <Button color="secondary" className="circular-btn" fullWidth>
-                  Confirmar orden
+                  Realizar orden
                 </Button>
               </Box>
             </CardContent>

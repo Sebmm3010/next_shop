@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import {
   Typography,
@@ -34,24 +34,32 @@ const getAddressFromCookies = (): FormData => {
     address2: Cookies.get("address2") || "",
     city: Cookies.get("city") || "",
     postalCode: Cookies.get("postalCode") || "",
-    country: Cookies.get("country") || "",
+    country: Cookies.get("country") || countries[0].code,
     phone: Cookies.get("phone") || "",
   };
 };
 
 const AddressPage = () => {
   const { updateAddress } = useContext(CartContext);
+  const [defaultCountry, setDefaultCountry] = useState("");
+
   const router = useRouter();
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<FormData>({
     defaultValues: getAddressFromCookies(),
   });
 
-  const onSubmit = (data: FormData) => {
+  useEffect(() => {
+    const addressFromCookies = getAddressFromCookies();
+    reset(addressFromCookies);
+    setDefaultCountry(addressFromCookies.country);
+  }, [reset]);
 
+  const onSubmit = (data: FormData) => {
     updateAddress(data);
 
     router.push("/checkout/summary");
@@ -140,27 +148,25 @@ const AddressPage = () => {
           </Grid>
           <Grid item xs={12} sm={6}>
             <FormControl fullWidth>
-              <TextField
-                {...register("country", {
-                  required: "Este campo es obligatorio",
-                })}
-                select
-                defaultValue={
-                  Cookies.get("country")
-                    ? Cookies.get("country")
-                    : countries[0].code
-                }
-                variant="filled"
-                label="Pais*"
-                error={!!errors.country}
-                helperText={errors.country?.message}
-              >
-                {countries.map((country) => (
-                  <MenuItem key={country.code} value={country.code}>
-                    {country.name}
-                  </MenuItem>
-                ))}
-              </TextField>
+              {!!defaultCountry && (
+                <TextField
+                  {...register("country", {
+                    required: "Este campo es obligatorio",
+                  })}
+                  select
+                  defaultValue={defaultCountry}
+                  variant="filled"
+                  label="Pais*"
+                  error={!!errors.country}
+                  helperText={errors.country?.message}
+                >
+                  {countries.map((country) => (
+                    <MenuItem key={country.code} value={country.code}>
+                      {country.name}
+                    </MenuItem>
+                  ))}
+                </TextField>
+              )}
             </FormControl>
           </Grid>
           <Grid item xs={12} sm={6}>
@@ -184,7 +190,7 @@ const AddressPage = () => {
             className="circular-btn"
             size="large"
           >
-            Realizar pedido
+            Confirmar pedido
           </Button>
         </Box>
       </form>
