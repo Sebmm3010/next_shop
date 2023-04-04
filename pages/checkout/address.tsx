@@ -40,7 +40,7 @@ const getAddressFromCookies = (): FormData => {
 };
 
 const AddressPage = () => {
-  const { updateAddress, shippingAddress } = useContext(CartContext);
+  const { updateAddress } = useContext(CartContext);
   const router = useRouter();
   const {
     register,
