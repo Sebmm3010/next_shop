@@ -2,6 +2,7 @@ import { FC, useReducer, ReactNode, useEffect } from "react";
 import Cookies from "js-cookie";
 import { ICartProduct, ShippingAddress } from "@/interfaces";
 import { CartContext, cartReducer } from "./";
+import { nextShopApi } from "@/api";
 
 // export interface ShippingAddress {
 //   name: string;
@@ -155,6 +156,15 @@ export const CartProvider: FC<Props> = ({ children }) => {
     });
   };
 
+  const createOrders = async () => {
+    try {
+      const { data } = await nextShopApi.post("/orders");
+      console.log({ data });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <CartContext.Provider
       value={{
@@ -164,6 +174,7 @@ export const CartProvider: FC<Props> = ({ children }) => {
         updateProductQuantity,
         removeCartProduct,
         updateAddress,
+        createOrders
       }}
     >
       {children}
