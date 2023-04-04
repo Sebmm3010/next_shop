@@ -1,6 +1,6 @@
 import { FC, useReducer, ReactNode, useEffect } from "react";
 import Cookies from "js-cookie";
-import { ICartProduct, ShippingAddress } from "@/interfaces";
+import { ICartProduct, IOrder, ShippingAddress } from "@/interfaces";
 import { CartContext, cartReducer } from "./";
 import { nextShopApi } from "@/api";
 
@@ -157,8 +157,22 @@ export const CartProvider: FC<Props> = ({ children }) => {
   };
 
   const createOrders = async () => {
+    if (!state.shippingAddress) {
+      throw new Error("No hay direccion de entrega");
+    }
+
+    const body: IOrder = {
+      orderItems: state.cart.map(p=>({...p, size:p.size!})),
+      shippingAddress: state.shippingAddress,
+      numberOfItems: state.numberOfItems,
+      subTotal: state.subTotal,
+      iva: state.iva,
+      total: state.total,
+      isPaid: false,
+    };
+
     try {
-      const { data } = await nextShopApi.post("/orders");
+      const { data } = await nextShopApi.post("/orders", body);
       console.log({ data });
     } catch (error) {
       console.log(error);
@@ -174,7 +188,7 @@ export const CartProvider: FC<Props> = ({ children }) => {
         updateProductQuantity,
         removeCartProduct,
         updateAddress,
-        createOrders
+        createOrders,
       }}
     >
       {children}
