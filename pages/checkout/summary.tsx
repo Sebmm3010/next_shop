@@ -20,18 +20,23 @@ import { countries } from "@/utils";
 import Cookies from "js-cookie";
 
 const SummaryPage = () => {
-  const { shippingAddress, numberOfItems } = useContext(CartContext);
-  const router=useRouter();
+  const { shippingAddress, numberOfItems, createOrders } =
+    useContext(CartContext);
+  const router = useRouter();
 
   useEffect(() => {
     if (!Cookies.get("name")) {
-      router.push("/checkout/address")
+      router.push("/checkout/address");
     }
   }, [router]);
 
   if (!shippingAddress) {
     return <></>;
   }
+
+  const handleCreateOrders = () => {
+    createOrders();
+  };
   return (
     <ShopLayout title={`Resumen de la orden`} pageDesc={"Resumen de la orden"}>
       <Typography variant="h1" component="h1">
@@ -84,7 +89,12 @@ const SummaryPage = () => {
               <CartOrderSummary />
 
               <Box sx={{ mt: 3 }}>
-                <Button color="secondary" className="circular-btn" fullWidth>
+                <Button
+                  color="secondary"
+                  className="circular-btn"
+                  fullWidth
+                  onClick={handleCreateOrders}
+                >
                   Realizar orden
                 </Button>
               </Box>
