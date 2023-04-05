@@ -1,10 +1,11 @@
 import { db } from "@/data";
 import { IOrder } from "@/interfaces";
-import { Product } from "@/models";
+import { Order, Product } from "@/models";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { getToken } from "next-auth/jwt";
+// import mongoose from "mongoose";
 
-type Data = { msg: string } | { order: IOrder };
+type Data = { msg: string } | IOrder;
 
 export default function handler(
   req: NextApiRequest,
@@ -42,15 +43,42 @@ const createOrder = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
   try {
     const subTotal = orderItems.reduce((prev, current) => {
       //? Cambiar el current price por el valor que viene de mi base de datos
-      const currentPrice = dbProducts.find((prod) => prod._id === current._id)!.price;
-      if(currentPrice){
-        throw new Error("Verifique el carrito de nuevo, producto no encontrado");
-        
+      const currentPrice = dbProducts.find(
+        (prod) => prod.id === current._id
+      )?.price;
+      // ? Forma alternativa para resolver el current price
+      // const currentPrice = dbProducts.find(
+      //   (p) => new mongoose.Types.ObjectId(p._id).toString() === current._id
+      // )?.price;
+      if (!currentPrice) {
+        throw new Error(
+          "Verifique el carrito de nuevo, producto no encontrado"
+        );
       }
-
-      return (current.price * current.quantity) + prev;
+      return current.price * current.quantity + prev;
     }, 0);
-  } catch (error) {}
 
-  res.status(201).json(session);
+    const ivaPorcentaje = Number(process.env.NEXT_PUBLIC_IVA || 0);
+    const backendTotal = subTotal * (ivaPorcentaje + 1);
+
+    if (total !== backendTotal) {
+      throw new Error("El total no cuandra con el monto");
+    }
+
+    // Todo bien hasta aqui
+    const userId = session.user.id || session.user._id;
+    const newOrder = new Order({ ...req.body, isPaid: false, user: userId });
+    await newOrder.save();
+    await db.disconnect();
+
+    return res.status(201).json(newOrder);
+
+  } catch (error: any) {
+    await db.disconnect();
+    console.log(error);
+    res.status(400).json({ msg: error.message || "Revisar logs del server" });
+  }
+  
+
+  res.status(201).json(req.body);
 };
