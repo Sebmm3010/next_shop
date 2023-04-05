@@ -3,6 +3,7 @@ import Cookies from "js-cookie";
 import { ICartProduct, IOrder, ShippingAddress } from "@/interfaces";
 import { CartContext, cartReducer } from "./";
 import { nextShopApi } from "@/api";
+import axios from "axios";
 
 // export interface ShippingAddress {
 //   name: string;
@@ -156,13 +157,16 @@ export const CartProvider: FC<Props> = ({ children }) => {
     });
   };
 
-  const createOrders = async () => {
+  const createOrders = async (): Promise<{
+    hasError: boolean;
+    message: string;
+  }> => {
     if (!state.shippingAddress) {
       throw new Error("No hay direccion de entrega");
     }
 
     const body: IOrder = {
-      orderItems: state.cart.map(p=>({...p, size:p.size!})),
+      orderItems: state.cart.map((p) => ({ ...p, size: p.size! })),
       shippingAddress: state.shippingAddress,
       numberOfItems: state.numberOfItems,
       subTotal: state.subTotal,
@@ -172,10 +176,23 @@ export const CartProvider: FC<Props> = ({ children }) => {
     };
 
     try {
-      const { data } = await nextShopApi.post("/orders", body);
-      console.log({ data });
+      const { data } = await nextShopApi.post<IOrder>("/orders", body);
+      // console.log({ data });
+      return {
+        hasError: false,
+        message: data._id!,
+      };
     } catch (error) {
-      console.log(error);
+      if (axios.isAxiosError(error)) {
+        return {
+          hasError: true,
+          message: error.response?.data.message,
+        };
+      }
+      return {
+        hasError: true,
+        message: "Error no controlado hable con un administrador",
+      };
     }
   };
 
