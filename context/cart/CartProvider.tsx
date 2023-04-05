@@ -178,6 +178,10 @@ export const CartProvider: FC<Props> = ({ children }) => {
     try {
       const { data } = await nextShopApi.post<IOrder>("/orders", body);
       // console.log({ data });
+      Cookies.remove("cart");
+
+      dispatch({ type: "[Cart] - Order completada" });
+
       return {
         hasError: false,
         message: data._id!,
