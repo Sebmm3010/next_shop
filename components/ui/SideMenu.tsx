@@ -88,7 +88,7 @@ export const SideMenu = () => {
                 <ListItemText primary={"Perfil"} />
               </ListItemButton>
 
-              <ListItemButton>
+              <ListItemButton onClick={() => navigate("/orders/history")}>
                 <ListItemIcon>
                   <ConfirmationNumberOutlined />
                 </ListItemIcon>
@@ -137,7 +137,9 @@ export const SideMenu = () => {
               <ListItemText primary={"Salir"} />
             </ListItemButton>
           ) : (
-            <ListItemButton onClick={() => navigate(`/auth/login?p=${router.asPath}`)}>
+            <ListItemButton
+              onClick={() => navigate(`/auth/login?p=${router.asPath}`)}
+            >
               <ListItemIcon>
                 <VpnKeyOutlined />
               </ListItemIcon>
