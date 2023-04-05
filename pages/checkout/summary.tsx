@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import NextLink from "next/link";
 
@@ -11,6 +11,7 @@ import {
   Box,
   Button,
   Link,
+  Chip,
 } from "@mui/material";
 
 import { ShopLayout } from "@/components/layouts";
@@ -22,8 +23,11 @@ import Cookies from "js-cookie";
 const SummaryPage = () => {
   const { shippingAddress, numberOfItems, createOrders } =
     useContext(CartContext);
-  const router = useRouter();
+  const [isPosting, setIsPosting] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
 
+  const router = useRouter();
+  //* Saber si hay ordenes en las cookies
   useEffect(() => {
     if (!Cookies.get("name")) {
       router.push("/checkout/address");
@@ -34,8 +38,16 @@ const SummaryPage = () => {
     return <></>;
   }
 
-  const handleCreateOrders = () => {
-    createOrders();
+  const handleCreateOrders = async () => {
+    setIsPosting(true);
+    const { hasError, message } = await createOrders();
+
+    if (hasError) {
+      setIsPosting(false);
+      setErrorMsg(message);
+      return;
+    }
+    router.replace(`/orders/${message}`);
   };
   return (
     <ShopLayout title={`Resumen de la orden`} pageDesc={"Resumen de la orden"}>
@@ -88,15 +100,22 @@ const SummaryPage = () => {
               </Box>
               <CartOrderSummary />
 
-              <Box sx={{ mt: 3 }}>
+              <Box sx={{ mt: 3 }} display="flex" flexDirection="column" gap={2}>
                 <Button
                   color="secondary"
                   className="circular-btn"
                   fullWidth
                   onClick={handleCreateOrders}
+                  disabled={isPosting}
                 >
                   Realizar orden
                 </Button>
+
+                <Chip
+                  color="error"
+                  label={errorMsg}
+                  sx={{ display: errorMsg ? "flex" : "none" }}
+                />
               </Box>
             </CardContent>
           </Card>

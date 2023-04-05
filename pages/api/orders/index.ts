@@ -80,5 +80,5 @@ const createOrder = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
   }
   
 
-  res.status(201).json(req.body);
+  // res.status(201).json(req.body);
 };
