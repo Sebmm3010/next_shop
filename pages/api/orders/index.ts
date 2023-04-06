@@ -1,6 +1,7 @@
 import { db } from "@/data";
 import { IOrder } from "@/interfaces";
 import { Order, Product } from "@/models";
+import { currency } from "@/utils";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { getToken } from "next-auth/jwt";
 // import mongoose from "mongoose";
@@ -23,7 +24,7 @@ export default function handler(
 }
 const createOrder = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
   const { orderItems, total } = req.body as IOrder;
-  // Confirmar que el user esta logeado
+  //?Confirmar que el user esta logeado
   const session: any = await getToken({
     req,
     secret: process.env.NEXTAUTH_SECRET,
@@ -68,17 +69,16 @@ const createOrder = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
     // Todo bien hasta aqui
     const userId = session.user.id || session.user._id;
     const newOrder = new Order({ ...req.body, isPaid: false, user: userId });
+    newOrder.dolarTotal = currency.pesosToDollar(newOrder.total);
     await newOrder.save();
     await db.disconnect();
 
     return res.status(201).json(newOrder);
-
   } catch (error: any) {
     await db.disconnect();
     console.log(error);
     res.status(400).json({ msg: error.message || "Revisar logs del server" });
   }
-  
 
   // res.status(201).json(req.body);
 };
