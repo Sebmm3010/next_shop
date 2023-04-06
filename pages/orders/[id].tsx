@@ -24,11 +24,9 @@ interface Props {
 }
 const OrderPage: NextPage<Props> = ({ order }) => {
   // console.log({order});
+  const { numberOfItems, total, subTotal, iva } = order;
   return (
-    <ShopLayout
-      title={"Resumen de la orden"}
-      pageDesc={"Resumen de la orden"}
-    >
+    <ShopLayout title={"Resumen de la orden"} pageDesc={"Resumen de la orden"}>
       <Typography variant="h1" component="h1">
         Orden: {order._id}
       </Typography>
@@ -53,7 +51,7 @@ const OrderPage: NextPage<Props> = ({ order }) => {
 
       <Grid container>
         <Grid item xs={12} sm={7}>
-          <CartList editable={false} products={order.orderItems}/>
+          <CartList editable={false} products={order.orderItems} />
         </Grid>
         <Grid item xs={12} sm={5}>
           <Card className="summary-card">
@@ -62,7 +60,6 @@ const OrderPage: NextPage<Props> = ({ order }) => {
                 Resumen({order.numberOfItems} productos)
               </Typography>
               <Divider sx={{ my: 1 }} />
-
 
               <Typography variant="subtitle1">Direccion de entrega</Typography>
               <Typography>
@@ -85,9 +82,16 @@ const OrderPage: NextPage<Props> = ({ order }) => {
               <Typography>{order.shippingAddress.phone}</Typography>
 
               <Divider sx={{ my: 1 }} />
-              <CartOrderSummary data={order}/>
+              <CartOrderSummary
+                data={{
+                  numberOfItems: order.numberOfItems,
+                  subTotal: order.subTotal,
+                  iva: order.iva,
+                  total: order.total,
+                }}
+              />
 
-              <Box sx={{ mt: 3 }}>
+              <Box sx={{ mt: 3 }} display="flex" flexDirection="column">
                 {order.isPaid ? (
                   <Chip
                     sx={{ my: 2 }}
@@ -97,13 +101,7 @@ const OrderPage: NextPage<Props> = ({ order }) => {
                     icon={<CreditScoreOutlined />}
                   />
                 ) : (
-                  <Chip
-                    sx={{ my: 2 }}
-                    label="pendiente de pago"
-                    variant="outlined"
-                    color="warning"
-                    icon={<CreditCardOutlined />}
-                  />
+                  <h1>Pagar</h1>
                 )}
               </Box>
             </CardContent>
@@ -120,7 +118,6 @@ export const getServerSideProps: GetServerSideProps = async ({
 }) => {
   const { id = "" } = query;
   const session = await getSession({ req });
-  console.log(session);
   if (!session) {
     return {
       redirect: {

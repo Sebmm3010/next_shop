@@ -5,7 +5,12 @@ import { currency } from "@/utils";
 import { IOrder } from "@/interfaces";
 
 interface Props {
-  data?: IOrder;
+  data?: {
+    numberOfItems: number;
+    subTotal: number;
+    iva: number;
+    total: number;
+  };
 }
 
 export const CartOrderSummary: FC<Props> = ({ data }) => {
@@ -44,7 +49,9 @@ export const CartOrderSummary: FC<Props> = ({ data }) => {
       </Grid>
 
       <Grid sx={{ mt: 2 }} item xs={6} display="flex" justifyContent="end">
-        <Typography variant="subtitle1">{currency.format(dataToShow.total)}</Typography>
+        <Typography variant="subtitle1">
+          {currency.format(dataToShow.total)}
+        </Typography>
       </Grid>
     </Grid>
   );
