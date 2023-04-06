@@ -23,8 +23,6 @@ interface Props {
   order: IOrder;
 }
 const OrderPage: NextPage<Props> = ({ order }) => {
-  // console.log({order});
-  const { numberOfItems, total, subTotal, iva } = order;
   return (
     <ShopLayout title={"Resumen de la orden"} pageDesc={"Resumen de la orden"}>
       <Typography variant="h1" component="h1">
@@ -49,7 +47,7 @@ const OrderPage: NextPage<Props> = ({ order }) => {
         />
       )}
 
-      <Grid container>
+      <Grid container className="fadeIn">
         <Grid item xs={12} sm={7}>
           <CartList editable={false} products={order.orderItems} />
         </Grid>
