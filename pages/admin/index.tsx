@@ -46,7 +46,7 @@ const summaryTile: PropsSummary[] = [
   },
   {
     title: 7,
-    subTitle: "Proximo a terminar",
+    subTitle: "Proximos a terminar",
     icon: (
       <ProductionQuantityLimitsOutlined color="warning" sx={{ fontSize: 40 }} />
     ),
