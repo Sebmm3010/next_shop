@@ -80,7 +80,7 @@ export const darkTheme = createTheme(
         },
         styleOverrides: {
           root: {
-            boxShadow: "0px 5px 5px rgba(0,0,0,0.05)",
+            boxShadow: "0px 5px 5px rgba(255,255,255,0.05)",
             borderRadius: "10px",
           },
         },
