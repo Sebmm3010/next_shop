@@ -149,7 +149,7 @@ export const SideMenu = () => {
 
           {/* Admin */}
           <Divider />
-          {user?.role === "admin" ? <AdminPanel /> : null}
+          {user?.role === "admin" ? <AdminPanel navigate={navigate} /> : null}
         </List>
       </Box>
     </Drawer>

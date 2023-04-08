@@ -1,7 +1,9 @@
+import { FC } from "react";
 import {
   AdminPanelSettings,
   CategoryOutlined,
   ConfirmationNumberOutlined,
+  DashboardOutlined,
 } from "@mui/icons-material";
 import {
   ListItemButton,
@@ -9,13 +11,23 @@ import {
   ListItemText,
   ListSubheader,
 } from "@mui/material";
-import React from "react";
 
-export const AdminPanel = () => {
+interface Props {
+  navigate: (url: string) => void;
+}
+
+export const AdminPanel: FC<Props> = ({ navigate }) => {
   return (
     <>
       <ListSubheader>Admin Panel</ListSubheader>
-
+      <ListItemButton
+        onClick={() => navigate("/admin/")}
+      >
+        <ListItemIcon>
+          <DashboardOutlined />
+        </ListItemIcon>
+        <ListItemText primary={"Dashboard"} />
+      </ListItemButton>
       <ListItemButton>
         <ListItemIcon>
           <CategoryOutlined />
