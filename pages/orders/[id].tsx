@@ -134,7 +134,7 @@ const OrderPage: NextPage<Props> = ({ order }) => {
                   <CircularProgress />
                 </Box>
 
-                <Box sx={{ display: isPaying ? "non5e" : "flex" }} flexDirection="column">
+                <Box sx={{ display: isPaying ? "none" : "flex" }} flexDirection="column">
                   {order.isPaid ? (
                     <Chip
                       sx={{ my: 2 }}
