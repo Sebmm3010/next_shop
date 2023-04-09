@@ -10,11 +10,12 @@ export interface IOrder {
   subTotal: number;
   iva: number;
   total: number;
-  isPaid:boolean;
-  paidAt?:string;
+  isPaid: boolean;
+  paidAt?: string;
 
-  dolarTotal?:number;
-  transactionId?:string;
+  dolarTotal?: number;
+  transactionId?: string;
+  createdAt?: string;
 }
 
 export interface IOrderItems {
@@ -25,7 +26,7 @@ export interface IOrderItems {
   slug: string;
   image: string;
   price: number;
-  gender:string;
+  gender: string;
 }
 
 export interface ShippingAddress {
