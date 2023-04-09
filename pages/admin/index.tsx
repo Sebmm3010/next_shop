@@ -6,6 +6,7 @@ import {
   CancelPresentationOutlined,
   CategoryOutlined,
   CreditCardOffOutlined,
+  CreditCardOutlined,
   DashboardOutlined,
   GroupOutlined,
   ProductionQuantityLimitsOutlined,
@@ -59,7 +60,7 @@ const AdminDashboradPage = () => {
           title={numberOfOrders}
           subTitle="Ordenes totales"
           icon={
-            <CreditCardOffOutlined color="secondary" sx={{ fontSize: 40 }} />
+            <CreditCardOutlined color="secondary" sx={{ fontSize: 40 }} />
           }
         />
         <AdminSummary

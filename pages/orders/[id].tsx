@@ -14,7 +14,7 @@ import {
   Chip,
   CircularProgress,
 } from "@mui/material";
-import { CreditCardOutlined, CreditScoreOutlined } from "@mui/icons-material";
+import { CreditCardOffOutlined, CreditScoreOutlined } from "@mui/icons-material";
 import { ShopLayout } from "@/components/layouts";
 import { CartList, CartOrderSummary } from "@/components/cart";
 import { dbOrders } from "@/data";
@@ -78,7 +78,7 @@ const OrderPage: NextPage<Props> = ({ order }) => {
           label="pendiente de pago"
           variant="outlined"
           color="warning"
-          icon={<CreditCardOutlined />}
+          icon={<CreditCardOffOutlined />}
         />
       )}
 
