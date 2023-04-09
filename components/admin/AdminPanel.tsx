@@ -41,7 +41,7 @@ export const AdminPanel: FC<Props> = ({ navigate }) => {
         <ListItemText primary={"Productos"} />
       </ListItemButton>
 
-      <ListItemButton>
+      <ListItemButton onClick={() => navigate("/admin/orders")}>
         <ListItemIcon>
           <ConfirmationNumberOutlined />
         </ListItemIcon>
