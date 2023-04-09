@@ -29,7 +29,7 @@ import {
 } from "@mui/icons-material";
 
 import { AuthContext, UiContext } from "@/context";
-import { AdminPanel } from "./";
+import { AdminPanel } from "../admin";
 
 export const SideMenu = () => {
   const [searchInput, setSearchInput] = useState("");
