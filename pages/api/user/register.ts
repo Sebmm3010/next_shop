@@ -49,11 +49,11 @@ const registerUser = async (
       msg: "Nombre debe ser mayor a 2 caracteres",
     });
   }
-  
-  if(!validation.isValidEmail(email)){
-     return res.status(400).json({
-       msg: "Nombre debe ser mayor a 2 caracteres",
-     });
+
+  if (!validation.isValidEmail(email)) {
+    return res.status(400).json({
+      msg: "Nombre debe ser mayor a 2 caracteres",
+    });
   }
 
   await db.connect();
@@ -67,7 +67,7 @@ const registerUser = async (
 
   const newUser = new User({
     name,
-    email: email.toLocaleLowerCase(),
+    email: email.toLowerCase(),
     password: bcrypt.hashSync(password, 10),
     role: "client",
   });
