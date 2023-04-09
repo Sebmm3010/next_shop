@@ -1,14 +1,22 @@
+import { useEffect, useState } from "react";
 import useSWR from "swr";
 import { PeopleOutline } from "@mui/icons-material";
 import { Grid, MenuItem, Select, Typography } from "@mui/material";
 import { DataGrid, GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
 import { AdminLayout } from "@/components/layouts";
 import { FullScreenLoading } from "@/components/ui";
-import { IUser } from "@/interfaces";
 import { nextShopApi } from "@/api";
+import { IUser } from "@/interfaces";
 
 const UsersPage = () => {
+  const [users, setUsers] = useState<IUser[]>([]);
   const { data, error } = useSWR<IUser[]>("/api/admin/users");
+
+  useEffect(() => {
+    if (data) {
+      setUsers(data);
+    }
+  }, [data]);
 
   if (!error && !data) {
     return <FullScreenLoading />;
@@ -19,9 +27,19 @@ const UsersPage = () => {
   }
 
   const onRoleUpdated = async (userId: string, newRole: string) => {
+    const previosUsers = users.map((user) => ({ ...user }));
+    const updatedUsers = users.map((user) => {
+      const id = user._id || user.id;
+      return {
+        ...user,
+        role: userId === id ? newRole : user.role,
+      };
+    });
+    setUsers(updatedUsers);
     try {
       await nextShopApi.put("/admin/users", { userId, role: newRole });
     } catch (error) {
+      setUsers(previosUsers);
       console.log(error);
       alert("No se pudo actualizar el role del usuario");
     }
@@ -45,14 +63,14 @@ const UsersPage = () => {
             <MenuItem value="admin">Admin</MenuItem>
             <MenuItem value="client">Client</MenuItem>
             <MenuItem value="super-user">Super-user</MenuItem>
-            <MenuItem value="CEO">SEO</MenuItem>
+            <MenuItem value="CEO">CEO</MenuItem>
           </Select>
         );
       },
     },
   ];
 
-  const row = data!.map((user) => ({
+  const row = users.map((user) => ({
     id: user._id || user.id,
     email: user.email,
     name: user.name,

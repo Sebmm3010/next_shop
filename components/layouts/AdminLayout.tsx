@@ -15,7 +15,7 @@ export const AdminLayout: FC<Props> = ({ children, title, subtitle, icon }) => {
   return (
     <>
       <Head>
-        <title>Admin</title>
+        <title>Admin dashboard</title>
       </Head>
       <nav>
         <AdminNavbar />
