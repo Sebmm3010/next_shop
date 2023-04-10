@@ -1,4 +1,4 @@
-import { ChangeEvent, FC } from "react";
+import { ChangeEvent, FC, useEffect } from "react";
 import { GetServerSideProps } from "next";
 import { useForm, Controller } from "react-hook-form";
 import { AdminLayout } from "../../../components/layouts";
@@ -80,10 +80,28 @@ const ProductAdminPage: FC<Props> = ({ product }) => {
     control,
     getValues,
     setValue,
+    watch,
     formState: { errors },
   } = useForm<FormData>({
     defaultValues: product,
   });
+
+  useEffect(() => {
+    const subscription = watch((value, { name, type }) => {
+      if (name === "title") {
+        const newSlug =
+          value.title
+            ?.trim()
+            .replaceAll(" ", "_")
+            .replaceAll("'", "")
+            .toLocaleLowerCase() || "";
+
+        setValue("slug", newSlug);
+      }
+    });
+    return () => subscription.unsubscribe();
+  }, [watch, setValue]);
+
   const onDeleteTag = (tag: string) => {};
 
   const handleFormData = (
