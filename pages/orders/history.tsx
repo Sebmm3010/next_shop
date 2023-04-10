@@ -1,14 +1,14 @@
 import { GetServerSideProps, NextPage } from "next";
 import NextLink from "next/link";
-import { Typography, Grid, Chip, Link } from "@mui/material";
-import { DataGrid } from "@mui/x-data-grid";
+import { Typography, Chip, Link } from "@mui/material";
 import { GridColDef, GridRenderCellParams } from "@mui/x-data-grid/models";
 import { ShopLayout } from "../../components/layouts";
 import { getSession } from "next-auth/react";
 import { dbOrders } from "@/data";
 import { IOrder } from "@/interfaces";
+import { DataTable } from "@/components/ui";
 
-const column: GridColDef[] = [
+const columns: GridColDef[] = [
   { field: "id", headerName: "ID", width: 100 },
   { field: "fullname", headerName: "Nombre", width: 300 },
   {
@@ -55,7 +55,7 @@ interface Props {
 }
 
 const HistoryPage: NextPage<Props> = ({ orders }) => {
-  const row = orders.map((order, i) => {
+  const rows = orders.map((order, i) => {
     return {
       id: i + 1,
       paid: order.isPaid,
@@ -72,11 +72,7 @@ const HistoryPage: NextPage<Props> = ({ orders }) => {
         Historial de ordenes
       </Typography>
 
-      <Grid container className="fadeIn">
-        <Grid item xs={12} sx={{ height: 650, width: "100%" }}>
-          <DataGrid rows={row} columns={column} pageSizeOptions={[100]} />
-        </Grid>
-      </Grid>
+      <DataTable rows={rows} columns={columns} />
     </ShopLayout>
   );
 };

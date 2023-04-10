@@ -1,10 +1,10 @@
-import { Chip, Grid, Typography } from "@mui/material";
-import { DataGrid, GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
+import { Chip, Typography } from "@mui/material";
+import { GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
 import { ConfirmationNumberOutlined } from "@mui/icons-material";
 import { AdminLayout } from "@/components/layouts";
 import useSWR from "swr";
 import { IOrder, IUser } from "@/interfaces";
-import { FullScreenLoading } from "@/components/ui";
+import { DataTable, FullScreenLoading } from "@/components/ui";
 import { currency, date } from "@/utils";
 
 const columns: GridColDef[] = [
@@ -36,7 +36,7 @@ const columns: GridColDef[] = [
     renderCell: ({ row }: GridRenderCellParams) => {
       return (
         <a
-          style={{ color: "#0535f5" }}
+          className="link"
           href={`/admin/orders/${row.id}`}
           target="_blank"
           rel="noopener noreferrer"
@@ -75,11 +75,7 @@ const OrdersAdminPage = () => {
       subtitle="Mantenimiento de ordenes"
       icon={<ConfirmationNumberOutlined />}
     >
-      <Grid container className="fadeIn">
-        <Grid item xs={12} sx={{ height: 650, width: "100%" }}>
-          <DataGrid rows={rows} columns={columns} pageSizeOptions={[100]} />
-        </Grid>
-      </Grid>
+      <DataTable rows={rows} columns={columns} />
     </AdminLayout>
   );
 };

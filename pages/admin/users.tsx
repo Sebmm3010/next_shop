@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import useSWR from "swr";
 import { PeopleOutline } from "@mui/icons-material";
-import { Grid, MenuItem, Select, Typography } from "@mui/material";
-import { DataGrid, GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
+import { MenuItem, Select, Typography } from "@mui/material";
+import { GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
 import { AdminLayout } from "@/components/layouts";
-import { FullScreenLoading } from "@/components/ui";
+import { DataTable, FullScreenLoading } from "@/components/ui";
 import { nextShopApi } from "@/api";
 import { IUser } from "@/interfaces";
 
@@ -83,11 +83,7 @@ const UsersPage = () => {
       subtitle={"Mantenimiento de usuarios"}
       icon={<PeopleOutline />}
     >
-      <Grid container className="fadeIn">
-        <Grid item xs={12} sx={{ height: 650, width: "100%" }}>
-          <DataGrid rows={row} columns={column} pageSizeOptions={[100]} />
-        </Grid>
-      </Grid>
+      <DataTable rows={row} columns={column} />
     </AdminLayout>
   );
 };
