@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { ChangeEvent, FC } from "react";
 import { GetServerSideProps } from "next";
 import { useForm, Controller } from "react-hook-form";
 import { AdminLayout } from "../../../components/layouts";
@@ -78,12 +78,20 @@ const ProductAdminPage: FC<Props> = ({ product }) => {
     register,
     handleSubmit,
     control,
+    getValues,
+    setValue,
     formState: { errors },
-  } = useForm({
+  } = useForm<FormData>({
     defaultValues: product,
   });
   const onDeleteTag = (tag: string) => {};
 
+  const handleFormData = (
+    { target }: ChangeEvent<HTMLInputElement>,
+    inputName: "gender" | "type"
+  ) => {
+    setValue(inputName, target.value, { shouldValidate: true });
+  };
   const onSubmitForm = (form: FormData) => {
     console.log({ form });
   };
@@ -194,8 +202,8 @@ const ProductAdminPage: FC<Props> = ({ product }) => {
               <FormLabel>Tipo</FormLabel>
               <RadioGroup
                 row
-                // value={ status }
-                // onChange={ onStatusChanged }
+                value={getValues("type")}
+                onChange={(event) => handleFormData(event, "type")}
               >
                 {validTypes.map((option) => (
                   <FormControlLabel
@@ -212,8 +220,8 @@ const ProductAdminPage: FC<Props> = ({ product }) => {
               <FormLabel>Género</FormLabel>
               <RadioGroup
                 row
-                // value={ status }
-                // onChange={ onStatusChanged }
+                value={getValues("gender")}
+                onChange={(event) => handleFormData(event, "gender")}
               >
                 {validGender.map((option) => (
                   <FormControlLabel
