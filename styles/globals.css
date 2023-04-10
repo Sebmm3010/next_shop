@@ -1,4 +1,5 @@
 @import "react-slideshow-image/dist/styles.css";
+
 @keyframes fadeIn {
   0% {
     opacity: 0;
@@ -22,6 +23,7 @@
 a {
   text-decoration: none;
 }
+
 input[type=number]::-webkit-inner-spin-button,
 input[type=number]::-webkit-outer-spin-button {
   -webkit-appearance: none;
@@ -42,6 +44,9 @@ input[type=number] {
   animation-name: fadeIn;
 }
 
+.link {
+  color: #0535f5;
+}
 
 .circular-btn {
   border-radius: 30px;
