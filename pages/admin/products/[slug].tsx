@@ -92,6 +92,19 @@ const ProductAdminPage: FC<Props> = ({ product }) => {
   ) => {
     setValue(inputName, target.value, { shouldValidate: true });
   };
+
+  const handleSizeChanges = (size: string) => {
+    const currentSize = getValues("sizes");
+    if (currentSize.includes(size)) {
+      return setValue(
+        "sizes",
+        currentSize.filter((s) => s !== size),
+        { shouldValidate: true }
+      );
+    }
+
+    setValue("sizes", [...currentSize, size], { shouldValidate: true });
+  };
   const onSubmitForm = (form: FormData) => {
     console.log({ form });
   };
@@ -239,7 +252,12 @@ const ProductAdminPage: FC<Props> = ({ product }) => {
               {validSizes.map((size) => (
                 <FormControlLabel
                   key={size}
-                  control={<Checkbox />}
+                  control={
+                    <Checkbox
+                      checked={getValues("sizes").includes(size)}
+                      onChange={() => handleSizeChanges(size)}
+                    />
+                  }
                   label={size}
                 />
               ))}
