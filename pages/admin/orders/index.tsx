@@ -5,7 +5,7 @@ import { AdminLayout } from "@/components/layouts";
 import useSWR from "swr";
 import { IOrder, IUser } from "@/interfaces";
 import { FullScreenLoading } from "@/components/ui";
-import { currency } from "@/utils";
+import { currency, date } from "@/utils";
 
 const columns: GridColDef[] = [
   { field: "id", headerName: "Orden ID", width: 250 },
@@ -67,7 +67,7 @@ const OrdersAdminPage = () => {
     dolarTotal: order.dolarTotal,
     isPaid: order.isPaid,
     noOfProducts: order.numberOfItems,
-    createdAt: order.createdAt,
+    createdAt: date.formatDate(order.createdAt as string),
   }));
   return (
     <AdminLayout
