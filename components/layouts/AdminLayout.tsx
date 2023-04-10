@@ -32,7 +32,7 @@ export const AdminLayout: FC<Props> = ({ children, title, subtitle, icon }) => {
           padding: "0 30px",
         }}
       >
-        <Box display="flex" flexDirection="column">
+        <Box display="flex" flexDirection="column" gap={2}>
           <Typography variant="h1" component="h1">
             {icon}{" "}
             {title}
