@@ -16,7 +16,7 @@ export default function handler(
     case "PUT":
       return updateProduct(req, res);
     case "POST":
-
+      return createProduct(req, res);
     default:
       return res.status(400).json({ msg: "Bad request" });
   }
@@ -61,6 +61,39 @@ const updateProduct = async (
   } catch (error) {
     await db.disconnect();
     console.log(error);
+    return res.status(400).json({ msg: "Revisar la consola del servidor" });
+  }
+};
+
+const createProduct = async (
+  req: NextApiRequest,
+  res: NextApiResponse<Data>
+) => {
+  const { images = [], slug } = req.body as IProduct;
+  if (images.length < 2) {
+    return res
+      .status(400)
+      .json({ msg: "El producto debe de tener minimo 2 imagenes" });
+  }
+
+  try {
+    await db.connect();
+    const productDB = await Product.findOne({ slug: slug });
+
+    if (productDB) {
+      return res.status(400).json({
+        msg: `El producto con el slug ${slug} ya existe en la base de datos`,
+      });
+    }
+
+    const product = new Product(req.body);
+    await product.save();
+    await db.disconnect();
+
+    return res.status(201).json(product);
+  } catch (error) {
+    console.log(error);
+    await db.disconnect();
     return res.status(400).json({ msg: "Revisar la consola del servidor" });
   }
 };
