@@ -28,6 +28,7 @@ import {
   RadioGroup,
   TextField,
 } from "@mui/material";
+import { nextShopApi } from "@/api";
 
 const validGender = ["hombre", "mujer", "infantil", "unisex"];
 const validTypes = [
@@ -75,6 +76,7 @@ interface Props {
 
 const ProductAdminPage: FC<Props> = ({ product }) => {
   const [newTagValue, setNewTagValue] = useState("");
+  const [isSaving, setIsSaving] = useState(false);
 
   const {
     register,
@@ -139,8 +141,28 @@ const ProductAdminPage: FC<Props> = ({ product }) => {
 
     setValue("sizes", [...currentSize, size], { shouldValidate: true });
   };
-  const onSubmitForm = (form: FormData) => {
-    console.log({ form });
+
+  const onSubmitForm = async (form: FormData) => {
+    if (form.images.length < 2)
+      return alert("El producto debe tener minimo 2 imagenes");
+    setIsSaving(true);
+
+    try {
+      const { data } = await nextShopApi({
+        url: "/admin/products",
+        method: "PUT",
+        data: form,
+      });
+      console.log({ data });
+      if (!form._id) {
+        // Todo recargar el navegador
+      } else {
+        setIsSaving(false);
+      }
+    } catch (error) {
+      console.log(error);
+      setIsSaving(false);
+    }
   };
 
   return (
@@ -156,6 +178,7 @@ const ProductAdminPage: FC<Props> = ({ product }) => {
             startIcon={<SaveOutlined />}
             sx={{ width: "150px" }}
             type="submit"
+            disabled={isSaving}
           >
             Guardar
           </Button>
