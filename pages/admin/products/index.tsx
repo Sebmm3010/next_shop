@@ -1,12 +1,13 @@
 import NextLink from "next/link";
-import { CardMedia, Typography, Link } from "@mui/material";
+import { CardMedia, Typography, Link, Box, Button } from "@mui/material";
 import { GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
-import { CategoryOutlined } from "@mui/icons-material";
+import { AddOutlined, CategoryOutlined } from "@mui/icons-material";
 import { AdminLayout } from "@/components/layouts";
 import useSWR from "swr";
 import { IProduct } from "@/interfaces";
 import { DataTable, FullScreenLoading } from "@/components/ui";
 import { currency } from "@/utils";
+import { useRouter } from "next/router";
 
 const columns: GridColDef[] = [
   {
@@ -53,6 +54,7 @@ const columns: GridColDef[] = [
 
 const ProductsPageAdmin = () => {
   const { data, error } = useSWR<IProduct[]>("/api/admin/products");
+  const router=useRouter();
   if (!error && !data) {
     return <FullScreenLoading />;
   }
@@ -78,6 +80,11 @@ const ProductsPageAdmin = () => {
       subtitle="Mantenimiento de productos"
       icon={<CategoryOutlined />}
     >
+      <Box display="flex" justifyContent="end" sx={{ mb: 2 }}>
+        <Button startIcon={<AddOutlined />} color="secondary" onClick={()=>router.push("/admin/products/new")}>
+          Crear nuevo producto
+        </Button>
+      </Box>
       <DataTable rows={rows} columns={columns} />
     </AdminLayout>
   );

@@ -1,8 +1,9 @@
 import { ChangeEvent, FC, useEffect, useState } from "react";
+import { useRouter } from "next/router";
 import { GetServerSideProps } from "next";
 import { useForm, Controller } from "react-hook-form";
-import { AdminLayout } from "../../../components/layouts";
-import { IProduct } from "../../../interfaces";
+import { AdminLayout } from "@/components/layouts";
+import { IProduct } from "@/interfaces";
 import {
   DriveFileRenameOutline,
   SaveOutlined,
@@ -28,6 +29,7 @@ import {
   RadioGroup,
   TextField,
 } from "@mui/material";
+import { Product } from "@/models";
 import { nextShopApi } from "@/api";
 
 const validGender = ["hombre", "mujer", "infantil", "unisex"];
@@ -77,6 +79,7 @@ interface Props {
 const ProductAdminPage: FC<Props> = ({ product }) => {
   const [newTagValue, setNewTagValue] = useState("");
   const [isSaving, setIsSaving] = useState(false);
+  const router = useRouter();
 
   const {
     register,
@@ -150,12 +153,12 @@ const ProductAdminPage: FC<Props> = ({ product }) => {
     try {
       const { data } = await nextShopApi({
         url: "/admin/products",
-        method: "PUT",
+        method: form._id ? "PUT" : "POST",
         data: form,
       });
       console.log({ data });
       if (!form._id) {
-        // Todo recargar el navegador
+        router.replace(`/admin/products/${form.slug}`);
       } else {
         setIsSaving(false);
       }
@@ -246,7 +249,6 @@ const ProductAdminPage: FC<Props> = ({ product }) => {
               sx={{ mb: 1 }}
               {...register("inStock", {
                 required: "Este campo es requerido",
-                minLength: { value: 2, message: "Mínimo 2 caracteres" },
               })}
               error={!!errors.inStock}
               helperText={errors.inStock?.message}
@@ -425,12 +427,20 @@ const ProductAdminPage: FC<Props> = ({ product }) => {
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   const { slug = "" } = query;
 
-  const product = await dbProducts.getProductsBySlug(slug.toString());
+  let product: IProduct | null;
+  if (slug === "new") {
+    const tempProduct = JSON.parse(JSON.stringify(new Product()));
+    delete tempProduct._id;
+    tempProduct.images = ["img1.jpg", "img2.jpg"];
+    product = tempProduct;
+  } else {
+    product = await dbProducts.getProductsBySlug(slug.toString());
+  }
 
   if (!product) {
     return {
       redirect: {
-        destination: "/admin/products",
+        destination: "/",
         permanent: false,
       },
     };

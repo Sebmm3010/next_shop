@@ -61,8 +61,8 @@ const OrdersAdminPage = () => {
 
   const rows = data!.map((order) => ({
     id: order._id,
-    email: (order.user as IUser).email,
-    name: (order.user as IUser).name,
+    email: (order.user as IUser)?.email,
+    name: (order.user as IUser)?.name,
     total: currency.format(order.total),
     dolarTotal: order.dolarTotal,
     isPaid: order.isPaid,
