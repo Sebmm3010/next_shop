@@ -1,4 +1,4 @@
-import { ChangeEvent, FC, useEffect, useState } from "react";
+import { ChangeEvent, FC, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
 import { GetServerSideProps } from "next";
 import { useForm, Controller } from "react-hook-form";
@@ -79,6 +79,8 @@ interface Props {
 const ProductAdminPage: FC<Props> = ({ product }) => {
   const [newTagValue, setNewTagValue] = useState("");
   const [isSaving, setIsSaving] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
   const router = useRouter();
 
   const {
@@ -123,6 +125,20 @@ const ProductAdminPage: FC<Props> = ({ product }) => {
   const onDeleteTag = (tag: string) => {
     const updateTags = getValues("tags").filter((t) => t !== tag);
     setValue("tags", updateTags, { shouldValidate: true });
+  };
+
+  const onFilesSelected = ({ target }: ChangeEvent<HTMLInputElement>) => {
+    if (!target.files || target.files.length === 0) {
+      return;
+    }
+    try {
+      for (const file of target.files) {
+        const formData = new FormData();
+        console.log(file);
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleFormData = (
@@ -227,19 +243,6 @@ const ProductAdminPage: FC<Props> = ({ product }) => {
                 />
               )}
             />
-            {/* <TextField
-              label="Descripción"
-              variant="filled"
-              fullWidth
-              multiline
-              sx={{ mb: 1 }}
-              {...register("description", {
-                required: "Este campo es requerido",
-                minLength: { value: 2, message: "Mínimo 2 caracteres" },
-              })}
-              error={!!errors.description}
-              helperText={errors.description?.message}
-            /> */}
 
             <TextField
               label="En inventario"
@@ -387,9 +390,18 @@ const ProductAdminPage: FC<Props> = ({ product }) => {
                 fullWidth
                 startIcon={<UploadOutlined />}
                 sx={{ mb: 3 }}
+                onClick={() => fileInputRef.current?.click()}
               >
                 Cargar imagen
               </Button>
+              <input
+                ref={fileInputRef}
+                onChange={onFilesSelected}
+                type="file"
+                multiple
+                accept="image/png, image/gif, image/jpeg,"
+                style={{ display: "none" }}
+              />
 
               <Chip
                 label="Es necesario al 2 imagenes"
