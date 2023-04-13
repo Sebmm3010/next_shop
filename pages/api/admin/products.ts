@@ -3,6 +3,9 @@ import { IProduct } from "@/interfaces";
 import { db } from "@/data";
 import { Product } from "@/models";
 import { isValidObjectId } from "mongoose";
+import { v2 as cloudinary } from "cloudinary";
+
+cloudinary.config(process.env.CLOUDINARY_URL || "");
 
 type Data = { msg: string } | IProduct[] | IProduct;
 
@@ -55,6 +58,15 @@ const updateProduct = async (
     }
 
     // ?Eliminar fotos de cloudinary
+    product.images.forEach(async (image) => {
+      if (!images.includes(image)) {
+        const [fileId, type] = image
+          .substring(image.lastIndexOf("/") + 1)
+          .split(".");
+        await cloudinary.uploader.destroy(`nextShop/${fileId}`);
+      }
+    });
+
     await product.updateOne(req.body);
     await db.disconnect();
     res.status(200).json(product);
