@@ -1,11 +1,11 @@
-import { useState, useContext } from 'react';
+import { useState, useContext } from "react";
 import { useRouter } from "next/router";
 import { NextPage } from "next";
 import { Grid, Box, Typography, Button, Chip } from "@mui/material";
 import { ShopLayout } from "@/components/layouts";
 import { ProducrSizeSelector, ProductSlideShow } from "@/components/products";
 import { ItemCounter } from "../../components/ui";
-import { CartContext } from '@/context';
+import { CartContext } from "@/context";
 import { IProduct, ICartProduct, ISize } from "../../interfaces";
 
 interface Props {
@@ -14,7 +14,7 @@ interface Props {
 
 const ProductPage: NextPage<Props> = ({ product }) => {
   const [tempProduct, setTempProduct] = useState<ICartProduct>({
-    _id: product._id,
+    _id: product._id as string,
     description: product.description,
     image: product.images[0],
     inStock: product.inStock,
@@ -26,30 +26,30 @@ const ProductPage: NextPage<Props> = ({ product }) => {
     quantity: 1,
   });
 
-  const {addProductCart}=useContext(CartContext)
+  const { addProductCart } = useContext(CartContext);
 
-  const router=useRouter();
-  const handleSelectedSize=(size:ISize)=>{
-    setTempProduct(currentProduct=>({
+  const router = useRouter();
+  const handleSelectedSize = (size: ISize) => {
+    setTempProduct((currentProduct) => ({
       ...currentProduct,
-      size
+      size,
     }));
-  }
+  };
 
-  const handleSelectedQuantity= (quantity:number) => {
+  const handleSelectedQuantity = (quantity: number) => {
     setTempProduct((currentProduct) => ({
       ...currentProduct,
       quantity,
     }));
   };
 
-  const addProduct=()=>{
-    if(!tempProduct.size) return;
+  const addProduct = () => {
+    if (!tempProduct.size) return;
 
     // TODO: LLamar accion del contexto
     addProductCart(tempProduct);
-    router.push('/cart');
-  }
+    router.push("/cart");
+  };
 
   return (
     <ShopLayout title={product.title} pageDesc={product.description}>
@@ -133,10 +133,9 @@ export const getStaticPaths: GetStaticPaths = async (ctx) => {
   };
 };
 
-
 import { GetStaticProps } from "next";
 import { dbProducts } from "@/data";
-import { currency } from '@/utils';
+import { currency } from "@/utils";
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   const { slug = "" } = params as { slug: string }; // your fetch function here
