@@ -82,14 +82,14 @@ const LoginPage = () => {
               <Typography variant="h1" component="h1" textAlign="center">
                 Iniciar sesión
               </Typography>
-              {/* {showError && (
+              {showError && (
                 <Chip
                   className="fadeIn"
                   label="Correo / Contraseña no validos"
                   color="error"
                   icon={<ErrorOutline />}
                 />
-              )} */}
+              )}
             </Grid>
 
             <Grid item xs={12}>
