@@ -84,14 +84,14 @@ const RegisterPage = () => {
               <Typography variant="h1" component="h1" textAlign="center">
                 Crear cuenta
               </Typography>
-              {showError && (
+              {/* {showError && (
                 <Chip
                   className="fadeIn"
                   label="Correo ya en uso"
                   color="error"
                   icon={<ErrorOutline />}
                 />
-              )}
+              )} */}
             </Grid>
 
             <Grid item xs={12}>
