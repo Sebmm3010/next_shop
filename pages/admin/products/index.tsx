@@ -24,7 +24,7 @@ const columns: GridColDef[] = [
           <CardMedia
             className="fadeIn"
             component={"img"}
-            image={`/products/${row.img}`}
+            image={row.img}
             alt={row.img}
           />
         </a>
