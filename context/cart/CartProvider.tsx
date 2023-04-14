@@ -2,7 +2,7 @@ import { FC, useReducer, ReactNode, useEffect } from "react";
 import Cookies from "js-cookie";
 import { ICartProduct, IOrder, ShippingAddress } from "@/interfaces";
 import { CartContext, cartReducer } from "./";
-import { nextShopApi } from "@/api";
+import { nextShopApi } from "@/apis";
 import axios from "axios";
 
 // export interface ShippingAddress {

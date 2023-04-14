@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import { useSession, signOut } from "next-auth/react";
 import { AuthContext, authReducer } from "./";
 import { IUser } from "@/interfaces";
-import { nextShopApi } from "@/api";
+import { nextShopApi } from "@/apis";
 import Cookies from "js-cookie";
 import axios from "axios";
 
@@ -31,7 +31,7 @@ export const AuthProvider: FC<Props> = ({ children }) => {
   useEffect(() => {
     if (status === "authenticated") {
       // console.log(data?.user);
-      dispatch({ type: "[Auth] - Login", payload: data?.user as IUser});
+      dispatch({ type: "[Auth] - Login", payload: data?.user as IUser });
     }
   }, [status, data]);
 

@@ -14,13 +14,16 @@ import {
   Chip,
   CircularProgress,
 } from "@mui/material";
-import { CreditCardOffOutlined, CreditScoreOutlined } from "@mui/icons-material";
+import {
+  CreditCardOffOutlined,
+  CreditScoreOutlined,
+} from "@mui/icons-material";
 import { ShopLayout } from "@/components/layouts";
 import { CartList, CartOrderSummary } from "@/components/cart";
 import { dbOrders } from "@/data";
 import { IOrder } from "@/interfaces";
 import { countries } from "@/utils";
-import { nextShopApi } from "@/api";
+import { nextShopApi } from "@/apis";
 
 export type OrderResponseBody = {
   id: string;
@@ -134,7 +137,10 @@ const OrderPage: NextPage<Props> = ({ order }) => {
                   <CircularProgress />
                 </Box>
 
-                <Box sx={{ display: isPaying ? "none" : "flex" }} flexDirection="column">
+                <Box
+                  sx={{ display: isPaying ? "none" : "flex" }}
+                  flexDirection="column"
+                >
                   {order.isPaid ? (
                     <Chip
                       sx={{ my: 2 }}

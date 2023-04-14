@@ -5,7 +5,7 @@ import { MenuItem, Select, Typography } from "@mui/material";
 import { GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
 import { AdminLayout } from "@/components/layouts";
 import { DataTable, FullScreenLoading } from "@/components/ui";
-import { nextShopApi } from "@/api";
+import { nextShopApi } from "@/apis";
 import { IUser } from "@/interfaces";
 
 const UsersPage = () => {

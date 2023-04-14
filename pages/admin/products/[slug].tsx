@@ -30,7 +30,7 @@ import {
   TextField,
 } from "@mui/material";
 import { Product } from "@/models";
-import { nextShopApi } from "@/api";
+import { nextShopApi } from "@/apis";
 
 const validGender = ["hombre", "mujer", "infantil", "unisex"];
 const validTypes = [
