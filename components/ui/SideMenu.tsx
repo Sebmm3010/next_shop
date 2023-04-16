@@ -18,6 +18,7 @@ import {
 import {
   AccountCircleOutlined,
   AdminPanelSettings,
+  Brightness5Outlined,
   CategoryOutlined,
   ConfirmationNumberOutlined,
   EscalatorWarningOutlined,
@@ -96,6 +97,13 @@ export const SideMenu = () => {
               </ListItemButton>
             </>
           ) : null}
+
+          <ListItemButton>
+            <ListItemIcon>
+              <Brightness5Outlined />
+            </ListItemIcon>
+            <ListItemText primary={"Cambiar tema"} />
+          </ListItemButton>
 
           {/* Botones de navegacion para moviles */}
           <ListItemButton
