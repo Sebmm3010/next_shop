@@ -12,13 +12,10 @@ import {
   ListItem,
   ListItemIcon,
   ListItemText,
-  ListSubheader,
   ListItemButton,
 } from "@mui/material";
 import {
   AccountCircleOutlined,
-  AdminPanelSettings,
-  CategoryOutlined,
   ConfirmationNumberOutlined,
   EscalatorWarningOutlined,
   FemaleOutlined,
@@ -96,6 +93,7 @@ export const SideMenu = () => {
               </ListItemButton>
             </>
           ) : null}
+
 
           {/* Botones de navegacion para moviles */}
           <ListItemButton
