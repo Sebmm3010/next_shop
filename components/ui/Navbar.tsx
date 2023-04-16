@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { FC, useContext, useState } from "react";
 import { useRouter } from "next/router";
 import NextLink from "next/link";
 import {
@@ -20,7 +20,11 @@ import {
 } from "@mui/icons-material";
 import { UiContext, CartContext } from "@/context";
 
-export const Navbar = () => {
+interface Props {
+  showMenu?: boolean;
+}
+
+export const Navbar: FC<Props> = ({ showMenu = true }) => {
   const router = useRouter();
   const [searchInput, setSearchInput] = useState("");
   const [isInputVisible, setIsInputVisible] = useState(false);
@@ -140,14 +144,20 @@ export const Navbar = () => {
         <NextLink href="/cart" passHref>
           <Link component={"span"}>
             <IconButton>
-              <Badge badgeContent={numberOfItems>9? "+9": numberOfItems} color="secondary">
+              <Badge
+                badgeContent={numberOfItems > 9 ? "+9" : numberOfItems}
+                color="secondary"
+              >
                 <ShoppingCartOutlined />
               </Badge>
             </IconButton>
           </Link>
         </NextLink>
 
-        <Button onClick={(e) => e.detail !== 0 && toogleSideMenu()}>
+        <Button
+          sx={{ display: showMenu ? "flex" : "none" }}
+          onClick={(e) => e.detail !== 0 && toogleSideMenu()}
+        >
           Menú
         </Button>
       </Toolbar>

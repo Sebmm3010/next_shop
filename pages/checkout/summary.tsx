@@ -19,6 +19,7 @@ import { CartList, CartOrderSummary } from "@/components/cart";
 import { CartContext } from "@/context";
 import { countries } from "@/utils";
 import Cookies from "js-cookie";
+import { CheckOutLayout } from '../../components/layouts/CheckOutLayout';
 
 const SummaryPage = () => {
   const { shippingAddress, numberOfItems, createOrders } =
@@ -50,7 +51,7 @@ const SummaryPage = () => {
     router.replace(`/orders/${message}`);
   };
   return (
-    <ShopLayout title={`Resumen de la orden`} pageDesc={"Resumen de la orden"}>
+    <CheckOutLayout title={`Resumen de la orden`} pageDesc={"Resumen de la orden"}>
       <Typography variant="h1" component="h1">
         Resumen de la orden
       </Typography>
@@ -121,7 +122,7 @@ const SummaryPage = () => {
           </Card>
         </Grid>
       </Grid>
-    </ShopLayout>
+    </CheckOutLayout>
   );
 };
 

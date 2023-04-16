@@ -9,7 +9,7 @@ import {
   MenuItem,
   Button,
 } from "@mui/material";
-import { ShopLayout } from "@/components/layouts";
+import { CheckOutLayout, ShopLayout } from "@/components/layouts";
 import { countries } from "@/utils";
 import { useForm } from "react-hook-form";
 import Cookies from "js-cookie";
@@ -66,7 +66,7 @@ const AddressPage = () => {
   };
 
   return (
-    <ShopLayout
+    <CheckOutLayout
       title={"Direccion de envio"}
       pageDesc={"Formulario de direccion de envio"}
     >
@@ -194,7 +194,7 @@ const AddressPage = () => {
           </Button>
         </Box>
       </form>
-    </ShopLayout>
+    </CheckOutLayout>
   );
 };
 
