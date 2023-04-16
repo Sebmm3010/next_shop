@@ -52,7 +52,11 @@ const ProductPage: NextPage<Props> = ({ product }) => {
   };
 
   return (
-    <ShopLayout title={product.title} pageDesc={product.description}>
+    <ShopLayout
+      title={product.title}
+      pageDesc={product.description}
+      imageUrl={product.images[0]}
+    >
       <Grid container spacing={3}>
         <Grid item xs={12} sm={7}>
           <ProductSlideShow images={product.images} />

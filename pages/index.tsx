@@ -10,6 +10,7 @@ const HomePage=()=> {
     <ShopLayout
       title="Next Shop | Home"
       pageDesc="Ecommerce clon de Next shop"
+      imageUrl="https://res.cloudinary.com/sebastianow/image/upload/v1681661406/nextShop/hc70h72tfebhuqeg9zio.png"
     >
       <Typography variant="h1" component="h1">
         Home
@@ -17,7 +18,7 @@ const HomePage=()=> {
       <Typography variant="h2" component="h2" sx={{ mb: 1 }}>
         Todos los productos
       </Typography>
-      {isLoading ? <FullScreenLoading/> : <ProductList products={products} />}
+      {isLoading ? <FullScreenLoading /> : <ProductList products={products} />}
     </ShopLayout>
   );
 }
