@@ -3,7 +3,6 @@ import { SWRConfig } from "swr";
 import { SessionProvider } from "next-auth/react";
 import {
   PayPalScriptProvider,
-  PayPalHostedFieldOptions,
 } from "@paypal/react-paypal-js";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import { AuthProvider, CartProvider, UiProvider } from "../context";
