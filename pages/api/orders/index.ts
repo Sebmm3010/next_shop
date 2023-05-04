@@ -4,7 +4,6 @@ import { Order, Product } from "@/models";
 import { currency } from "@/utils";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { getToken } from "next-auth/jwt";
-// import mongoose from "mongoose";
 
 type Data = { msg: string } | IOrder;
 
@@ -19,8 +18,6 @@ export default function handler(
     default:
       res.status(400).json({ msg: "Bad request" });
   }
-
-  res.status(200).json({ msg: "Hola, mi nombre el frile horn hernesto perez" });
 }
 const createOrder = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
   const { orderItems, total } = req.body as IOrder;

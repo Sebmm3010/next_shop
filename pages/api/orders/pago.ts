@@ -18,7 +18,6 @@ export default function handler(
     default:
       res.status(400).json({ msg: "Bad request" });
   }
-  res.status(200).json({ msg: "Example" });
 }
 
 const getBearerToken = async () => {
